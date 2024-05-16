@@ -1,0 +1,4 @@
+from python:3.12.3
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]

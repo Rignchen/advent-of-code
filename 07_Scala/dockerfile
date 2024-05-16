@@ -1,0 +1,4 @@
+from sbtscala/scala-sbt:eclipse-temurin-alpine-22_36_1.10.0_3.4.1
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]

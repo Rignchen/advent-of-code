@@ -1,0 +1,4 @@
+from julia:1.6.7-bullseye
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]

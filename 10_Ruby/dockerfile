@@ -1,0 +1,4 @@
+from ruby:3.3.1-bullseye
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]

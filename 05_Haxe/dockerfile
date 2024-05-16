@@ -1,0 +1,4 @@
+from haxe:4.3.4-buster
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]

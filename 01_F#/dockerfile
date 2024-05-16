@@ -1,0 +1,4 @@
+from esolang/fsharp-dotnet:2.4.0
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]

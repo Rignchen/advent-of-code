@@ -1,0 +1,4 @@
+from gcc:12.3.0-bookworm
+volume . /app
+workdir /app
+entrypoint ["tail", "-f", "/dev/null"]
