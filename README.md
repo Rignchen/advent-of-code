@@ -64,6 +64,7 @@ My folder structure will be as follows:
 │   ├── input.txt
 │   ├── script_1
 │   └── Rscript_2
+├── LICENSE.md (GLWTS)
 └── README.md (this file)
 ```
 
