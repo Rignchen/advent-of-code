@@ -70,9 +70,10 @@ My folder structure will be as follows:
 ├── day_language
 │   ├── Dockerfile
 │   ├── .gitignore
-│   ├── input.txt
-│   ├── script_1
-│   └── Rscript_2
+│   └── src
+│       ├── input.txt
+│       ├── scripti_1
+│       └── scripti_2
 ├── LICENSE.md (GLWTS)
 └── README.md (this file)
 ```
