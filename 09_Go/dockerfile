@@ -1,4 +1,0 @@
-from golang:1.22.3-alpine3.19
-volume . /app
-workdir /app
-entrypoint ["tail", "-f", "/dev/null"]

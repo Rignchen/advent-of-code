@@ -1,4 +1,0 @@
-from openjdk:23-ea-21-oracle
-volume . /app
-workdir /app
-entrypoint ["tail", "-f", "/dev/null"]

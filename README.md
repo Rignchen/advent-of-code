@@ -37,6 +37,7 @@ Here's the list of languages I got:
 
 23. C
 24. Python
+25. PHP
 
 I will be using docker to run the code, so I don't have to install all the languages on my machine.\
 That way it will also be easy for you to run these scripts on your machine if you want to.\
@@ -60,6 +61,7 @@ Here's the list of docker images I will be using:
 - Julia: julia:1.6.7-bullseye
 - D: gcc:12.3.0-bookworm
 - F#: esolang/fsharp-dotnet:2.4.0
+- Php: php:8.3.7-fpm-alpine
 
 I want to take a year of advent of code that I've never done before, so I'll be going with [2020](https://adventofcode.com/2020).\
 My folder structure will be as follows:

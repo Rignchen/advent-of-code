@@ -1,4 +1,0 @@
-from node:22.1.0-bullseye
-volume . /app
-workdir /app
-entrypoint ["tail", "-f", "/dev/null"]
