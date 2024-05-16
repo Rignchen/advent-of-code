@@ -2,6 +2,7 @@
 
 I asked 4 of my friends to give me a list of languages, the size of the list was randomly chosen between 2 and 12 except for the last one wich was 24 - the allready chosen languages.\
 Here's the list of languages I got:
+
 [LTHC](https://github.com/LTHCTheMaster):
 1. F#
 2. D
@@ -10,13 +11,17 @@ Here's the list of languages I got:
 5. Haxe
 6. Groovy
 7. Scala
-8. Swift
+8. Swift\
+
 [Dwesh](https://github.com/dwesh163):
+
 9. Go
 10. Ruby
 11. JavaScript
-12. Java
+12. Java\
+
 [Epsilon](https://github.com/e-psi-lon):
+
 13. Java
 14. C
 15. C++
@@ -26,8 +31,10 @@ Here's the list of languages I got:
 19. COBOL
 20. Fortran
 21. C#
-22. Scala
+22. Scala\
+
 [Stoupy](https://github.com/Stoupy51):
+
 23. C
 24. Python
 
@@ -54,7 +61,7 @@ Here's the list of docker images I will be using:
 - D: gcc:12.3.0-bookworm
 - F#: esolang/fsharp-dotnet:2.4.0
 
-I want to take a year of advent of code that I've never done before, so I'll be going with 2020.\
+I want to take a year of advent of code that I've never done before, so I'll be going with [2020](https://adventofcode.com/2020).\
 My folder structure will be as follows:
 ```
 .
