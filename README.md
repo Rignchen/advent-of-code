@@ -72,6 +72,7 @@ My folder structure will be as follows:
 │   ├── .gitignore
 │   └── src
 │       ├── input.txt
+│       ├── example.txt
 │       ├── scripti_1
 │       └── scripti_2
 ├── LICENSE.md (GLWTS)
