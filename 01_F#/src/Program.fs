@@ -2,7 +2,7 @@ let readLines filePath = System.IO.File.ReadLines(filePath);;
 let inline add a b = a + b;;
 let inline multiply a b = a * b;;
 
-let lines = readLines "example.txt";;
+let lines = readLines "input.txt";;
 let numbers = lines |> Seq.map int |> Seq.toList;;
 
 for i in 0..numbers.Length-2 do
