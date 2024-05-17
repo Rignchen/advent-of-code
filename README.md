@@ -60,7 +60,7 @@ Here's the list of docker images I will be using:
 - Objective C: gcc:12.3.0-bookworm
 - Julia: julia:1.6.7-bullseye
 - D: gcc:12.3.0-bookworm
-- F#: esolang/fsharp-dotnet:2.4.0
+- F#: mcr.microsoft.com/dotnet/sdk:8.0-alpine
 - Php: php:8.3.7-fpm-alpine
 
 I want to take a year of advent of code that I've never done before, so I'll be going with [2020](https://adventofcode.com/2020).\
