@@ -7,4 +7,5 @@ let numbers = lines |> Seq.map int |> Seq.toList;;
 for i in 0..numbers.Length-2 do
     for j in i+1..numbers.Length-1 do
         let s = add numbers.[i] numbers.[j]
-        printfn "%d + %d = %d" numbers.[i] numbers.[j] s;;
+        if s = 2020 then
+            printfn "%d + %d = %d" numbers.[i] numbers.[j] s;;
