@@ -1,7 +1,9 @@
+text = []
 open("/app/example.txt","r") do f
         while ! eof(f)
                 line = readline(f)
-                println(line)
+                push!(text,line)
         end
 end
+println(text)
 
