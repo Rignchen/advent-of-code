@@ -4,16 +4,9 @@ import std.conv;
 
 void main(string[] args)
 {
+        // read file
         auto file = File(args[1]);
-        struct pswd
-        {
-                int min;
-                int max;
-                char letter;
-                string password;
-        }
         string[] text;
-        pswd[] passwords;
         while(!file.eof())
         {
                 string line = file.readln();
@@ -23,7 +16,16 @@ void main(string[] args)
                 }
         }
         file.close();
-        writeln("Text: %s", text);
+
+        // parse passwords
+        struct pswd
+        {
+                int min;
+                int max;
+                char letter;
+                string password;
+        }
+        pswd[] passwords;
         foreach(string line; text)
         {
                 string[] exploded = line.split(" ");
@@ -34,7 +36,6 @@ void main(string[] args)
                         exploded[1][0],
                         exploded[2]
                 );
-                writeln(p);
                 passwords ~= p;
         }
         writeln("Passwords: ",passwords);
