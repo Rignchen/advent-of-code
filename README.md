@@ -59,7 +59,7 @@ Here's the list of docker images I will be using:
 - Haxe: haxe:4.3.4-buster
 - Objective C: gcc:12.3.0-bookworm
 - Julia: julia:1.6.7-bullseye
-- D: gcc:12.3.0-bookworm
+- D: custom docker image, see [Dockerfile](./02_D/Dockerfile)
 - F#: mcr.microsoft.com/dotnet/sdk:8.0-alpine
 - Php: php:8.3.7-fpm-alpine
 
