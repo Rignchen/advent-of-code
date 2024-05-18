@@ -39,4 +39,13 @@ void main(string[] args)
                 passwords ~= p;
         }
         writeln("Passwords: ",passwords);
+
+        // count correct passwords
+        foreach(pswd p; passwords)
+        {
+                foreach(char c; p.password)
+                {
+                        write(c);
+                }
+        }
 }
