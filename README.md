@@ -73,8 +73,8 @@ My folder structure will be as follows:
 │   └── src
 │       ├── input.txt
 │       ├── example.txt
-│       ├── scripti_1
-│       └── scripti_2
+│       ├── script_1
+│       └── script_2
 ├── LICENSE.md (GLWTS)
 └── README.md (this file)
 ```
