@@ -41,9 +41,10 @@ void main(string[] args)
         }
         writeln("Passwords: ",passwords);
 
-        // count correct passwords
+        int correct;
         foreach(pswd p; passwords)
         {
+                // count correct char
                 int count;
                 foreach(char c; p.password)
                 {
@@ -53,5 +54,12 @@ void main(string[] args)
                         }
                 }
                 writeln("Password \"", p.password, "\" has ", p.letter, " times the char ", count);
+
+                // count correct password
+                if (count >= p.min && count <= p.max)
+                {
+                        correct++;
+                }
         }
+        writeln("There's ", correct, " correct password");
 }
