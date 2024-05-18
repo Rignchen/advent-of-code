@@ -10,6 +10,8 @@ println(text)
 y = 0
 for line in text
         println("$line : $y")
-        println(line[y % length(line)+1])
+        if line[y % length(line)+1] == '#'
+                println("$y: $line")
+        end
         global y += 3
 end
