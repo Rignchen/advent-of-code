@@ -41,23 +41,13 @@ void main(string[] args)
         }
         writeln("Passwords: ",passwords);
 
+        // count correct password
         int correct;
         foreach(pswd p; passwords)
         {
-                // count correct char
-                int count;
-                foreach(char c; p.password)
+                if ((p.password[p.min-1] == p.letter) != (p.password[p.max-1] == p.letter)) // != act as XOR
                 {
-                        if (c == p.letter)
-                        {
-                                count++;
-                        }
-                }
-                writeln("Password \"", p.password, "\" has ", p.letter, " times the char ", count);
-
-                // count correct password
-                if (count >= p.min && count <= p.max)
-                {
+                        writeln("Valid password: ", p);
                         correct++;
                 }
         }
