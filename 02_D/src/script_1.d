@@ -1,5 +1,6 @@
 import std.stdio;
 import std.array;
+import std.conv;
 
 void main(string[] args)
 {
@@ -25,9 +26,16 @@ void main(string[] args)
         writeln("Text: %s", text);
         foreach(string line; text)
         {
-
-                // lines = min-max letter: password
                 string[] exploded = line.split(" ");
-                writeln(exploded);
+                string[] range = exploded[0].split("-");
+                pswd p = pswd(
+                        to!int(range[0]),
+                        to!int(range[1]),
+                        exploded[1][0],
+                        exploded[2]
+                );
+                writeln(p);
+                passwords ~= p;
         }
+        writeln("Passwords: ",passwords);
 }
