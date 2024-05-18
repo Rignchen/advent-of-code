@@ -16,6 +16,7 @@ void main(string[] args)
                 }
         }
         file.close();
+        writeln("Text: ",text);
 
         // parse passwords
         struct pswd
@@ -43,9 +44,14 @@ void main(string[] args)
         // count correct passwords
         foreach(pswd p; passwords)
         {
+                int count;
                 foreach(char c; p.password)
                 {
-                        write(c);
+                        if (c == p.letter)
+                        {
+                                count++;
+                        }
                 }
+                writeln("Password \"", p.password, "\" has ", p.letter, " times the char ", count);
         }
 }
