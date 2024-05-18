@@ -16,7 +16,10 @@ void main(string[] args)
         while(!file.eof())
         {
                 string line = file.readln();
-                text ~= line;
+                if (!file.eof())
+                {
+                        text ~= line;
+                }
         }
         file.close();
         writeln("Text: %s", text);
