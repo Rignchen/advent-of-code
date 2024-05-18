@@ -1,8 +1,9 @@
 FROM alpine:3.19
-RUN apk add gcc-gdc
-COPY ./src /app
+RUN apk add --no-cache gcc-gdc
 WORKDIR /app
-RUN chmod +x compile.sh && \
+COPY ./src .
+RUN mkdir bin && \
+    chmod +x compile.sh && \
     ./compile.sh && \
     rm compile.sh
 ENTRYPOINT ["tail", "-f", "/dev/null"]
