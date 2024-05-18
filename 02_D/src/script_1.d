@@ -1,8 +1,8 @@
 import std.stdio;
 
-void main()
+void main(string[] args)
 {
-        auto file = File("/app/example.txt");
+        auto file = File(args[1]);
         writefln("File size: %s", file.size());
         writefln("File name: %s", file.name());
         writefln("File type: %s", typeid(file));
