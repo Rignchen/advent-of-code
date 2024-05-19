@@ -57,7 +57,7 @@ Here's the list of docker images I will be using:
 - Swift: swift:5.9.2-rhel-ubi9-slim
 - Groovy: groovy:jdk21
 - Haxe: haxe:4.3.4-buster
-- Objective C: gcc:12.3.0-bookworm
+- Objective C: custom docker image, see [Dockerfile](./04_Objective-C/Dockerfile)
 - Julia: julia:1.6.7-bullseye
 - D: custom docker image, see [Dockerfile](./02_D/Dockerfile)
 - F#: mcr.microsoft.com/dotnet/sdk:8.0-alpine
