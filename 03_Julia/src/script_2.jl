@@ -7,6 +7,7 @@ open("/app/example.txt","r") do f
 end
 println(text)
 
+result = 1
 dif_x = [1,3,5,7,1]
 dif_y = [1,1,1,1,2]
 for i in 1:5
@@ -24,5 +25,8 @@ for i in 1:5
                 y += dif_y[i]
         end
         println("Count of tree for slide $i: $count")
+        global result *= count
 end
+
+println("Count of tree: $result")
 
