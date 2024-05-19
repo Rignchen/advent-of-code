@@ -3,7 +3,7 @@
 int main(int argc, const char * argv[]) {
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-
+        // Read file content
         if (argc < 2) {
             NSLog(@"Usage: %s <filename>", argv[0]);
             return 1;
@@ -24,6 +24,9 @@ int main(int argc, const char * argv[]) {
 
         NSLog(@"%@", fileContent);
 
+        // 
+
+        // Exit program
         [pool drain];
         return 0;
 }
