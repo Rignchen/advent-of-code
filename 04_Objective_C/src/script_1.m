@@ -42,18 +42,33 @@ int main(int argc, const char * argv[]) {
                 // remove empty fields
                 // create dictionary from passport fields (passwords fields are in format key:value)
                 NSMutableDictionary *passportDict = [NSMutableDictionary dictionary];
+                NSMutableArray *keys = [NSMutableArray array];
                 for (int j = 0; j < [passportFields count]; j++) {
                         NSString *field = [passportFields objectAtIndex:j];
                         if ([field length] > 0) {
                                 NSArray *fieldComponents = [field componentsSeparatedByString:@":"];
                                 [passportDict setObject:[fieldComponents objectAtIndex:1] forKey:[fieldComponents objectAtIndex:0]];
+                                [keys addObject:[fieldComponents objectAtIndex:0]];
                         }
                 }
 
+                // check if all required fields are present
+                // byr iyr eyr hgt hcl ecl pid cid 
+                NSArray *requiredFields = [NSArray arrayWithObjects:@"byr", @"iyr", @"eyr", @"hgt", @"hcl", @"ecl", @"pid", nil];
+                BOOL valid = YES;
+                for (int k = 0; k < [requiredFields count]; k++) {
+                        if (![keys containsObject:[requiredFields objectAtIndex:k]]) {
+                                valid = NO;
+                                break;
+                        }
+                }
 
                 NSLog(@"\rPassport dictionary: %@", passportDict);
 
+                [parsedPassports addObject:passportDict];
         }
+
+        NSLog(@"\rParsed passports: %@", parsedPassports);
 
         // Exit program
         [pool drain];
