@@ -28,6 +28,8 @@ int main(int argc, const char * argv[]) {
         NSMutableArray *passports = [NSMutableArray arrayWithArray:[fileContent componentsSeparatedByString:@"\n\n"]];
         NSLog(@"\rPassports: %@\n", passports);
 
+        NSInteger count = 0;
+
         NSMutableArray *parsedPassports = [NSMutableArray array];
         for (int i = 0; i < [passports count]; i++) {
                 // replace \n with space in passports
@@ -62,6 +64,10 @@ int main(int argc, const char * argv[]) {
                                 break;
                         }
                 }
+                if (valid) {
+                        NSLog(@"\rValid passport: %@", passportDict);
+                        count += 1;
+                }
 
                 NSLog(@"\rPassport dictionary: %@", passportDict);
 
@@ -69,6 +75,7 @@ int main(int argc, const char * argv[]) {
         }
 
         NSLog(@"\rParsed passports: %@", parsedPassports);
+        NSLog(@"\r---\nValid passports: %d\n", count);
 
         // Exit program
         [pool drain];
