@@ -24,7 +24,10 @@ int main(int argc, const char * argv[]) {
 
         NSLog(@"\r%@", fileContent);
 
-        // 
+        // Get the passports (passports are separated by a blank line: \n\n)
+        NSMutableArray *passports = [NSMutableArray arrayWithArray:[fileContent componentsSeparatedByString:@"\n\n"]];
+        NSLog(@"\rPassports: %@\n", passports);
+
 
         // Exit program
         [pool drain];
