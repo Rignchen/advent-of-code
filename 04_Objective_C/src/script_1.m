@@ -28,6 +28,14 @@ int main(int argc, const char * argv[]) {
         NSMutableArray *passports = [NSMutableArray arrayWithArray:[fileContent componentsSeparatedByString:@"\n\n"]];
         NSLog(@"\rPassports: %@\n", passports);
 
+        NSMutableArray *parsedPassports = [NSMutableArray array];
+        for (int i = 0; i < [passports count]; i++) {
+                // replace \n with space in passports
+                NSString *passport = [passports objectAtIndex:i];
+                passport = [passport stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+                NSLog(@"\rPassport %d: %@", i, passport);
+
+        }
 
         // Exit program
         [pool drain];
