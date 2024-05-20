@@ -35,6 +35,10 @@ int main(int argc, const char * argv[]) {
                 passport = [passport stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
                 NSLog(@"\rPassport %d: %@", i, passport);
 
+                // split passport on spaces
+                NSArray *passportFields = [passport componentsSeparatedByString:@" "];
+                NSLog(@"\rPassport fields: %@", passportFields);
+
         }
 
         // Exit program
