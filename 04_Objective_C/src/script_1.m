@@ -5,24 +5,24 @@ int main(int argc, const char * argv[]) {
 
         // Read file content
         if (argc < 2) {
-            NSLog(@"Usage: %s <filename>", argv[0]);
+            NSLog(@"\rUsage: %s <filename>", argv[0]);
             return 1;
         }
 
         NSString *filePath = [NSString stringWithUTF8String:argv[1]];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         if (!fileData) {
-            NSLog(@"Could not read file %@", [NSString stringWithUTF8String:argv[1]]);
+            NSLog(@"\rCould not read file %@", [NSString stringWithUTF8String:argv[1]]);
             return 1;
         }
 
         NSString *fileContent = [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];
         if (!fileContent) {
-            NSLog(@"Could not decode file content");
+            NSLog(@"\rCould not decode file content");
             return 1;
         }
 
-        NSLog(@"%@", fileContent);
+        NSLog(@"\r%@", fileContent);
 
         // 
 
