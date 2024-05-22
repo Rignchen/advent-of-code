@@ -74,6 +74,13 @@ int main(int argc, const char * argv[]) {
                                 break;
                         }
                 }
+
+                for (int k = 0; k < [keys count]; k++) {
+                        NSString *key = [keys objectAtIndex:k];
+                        NSString *value = [passportDict objectForKey:key];
+                        }
+                }
+
                 if (valid) {
                         NSLog(@"%@Valid passport: %@", blank, passportDict);
                         count += 1;
