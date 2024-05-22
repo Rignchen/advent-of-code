@@ -1,8 +1,15 @@
 #import <Foundation/Foundation.h>
 
+void pause() {
+        NSString *blank = @"\r                                        \r";
+        NSLog(@"%@Press enter to continue...", blank);
+        getchar();
+}
+
 int main(int argc, const char * argv[]) {
         // blank = \r + 40 spaces + \r
         NSString *blank = @"\r                                        \r";
+        pause();
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
         // Read file content
@@ -26,6 +33,7 @@ int main(int argc, const char * argv[]) {
 
         NSLog(@"%@%@", blank, fileContent);
 
+        pause();
         // Get the passports (passports are separated by a blank line: \n\n)
         NSMutableArray *passports = [NSMutableArray arrayWithArray:[fileContent componentsSeparatedByString:@"\n\n"]];
         NSLog(@"%@Passports: %@\n", blank, passports);
@@ -69,6 +77,9 @@ int main(int argc, const char * argv[]) {
                 if (valid) {
                         NSLog(@"%@Valid passport: %@", blank, passportDict);
                         count += 1;
+                }
+                else {
+                        pause();
                 }
 
                 NSLog(@"%@Passport dictionary: %@", blank, passportDict);
