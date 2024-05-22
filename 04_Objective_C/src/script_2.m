@@ -117,6 +117,10 @@ break;
                                         break;
                                 case 198139636 : // ecl
                                         //ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+                                        if (![value isEqualToString:@"amb"] && ![value isEqualToString:@"blu"] && ![value isEqualToString:@"brn"] && ![value isEqualToString:@"gry"] && ![value isEqualToString:@"grn"] && ![value isEqualToString:@"hzl"] && ![value isEqualToString:@"oth"]) {
+                                                NSLog(@"%@Invalid ecl: %@", blank, value);
+                                                valid = NO;
+                                        }
                                         break;
                                 case 91973405 : // pid
                                         //pid (Passport ID) - a nine-digit number, including leading zeroes.
