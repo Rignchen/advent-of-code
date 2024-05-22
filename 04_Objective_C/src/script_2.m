@@ -107,6 +107,13 @@ break;
                                         break;
                                 case 47110359 : // hcl
                                         //hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
+                                        NSString *pattern = @"^#[0-9a-f]{6}$";
+                                        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:nil];
+                                        NSUInteger matches = [regex numberOfMatchesInString:value options:0 range:NSMakeRange(0, [value length])];
+                                        if (matches == 0) {
+                                                NSLog(@"%@Invalid hcl: %@", blank, value);
+                                                valid = NO;
+                                        }
                                         break;
                                 case 198139636 : // ecl
                                         //ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
