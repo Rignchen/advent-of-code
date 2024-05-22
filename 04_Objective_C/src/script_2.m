@@ -88,6 +88,10 @@ int main(int argc, const char * argv[]) {
                                         break;
                                 case 87036564 : // iyr
                                         //iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+                                        if (value.length != 4 || [value intValue] < 2010 || [value intValue] > 2020) {
+                                                NSLog(@"%@Invalid iyr: %@", blank, value);
+                                                valid = NO;
+                                        }
                                         break;
                                 case 198930448 : // eyr
                                         //eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
