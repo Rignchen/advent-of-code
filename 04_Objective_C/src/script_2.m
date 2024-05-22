@@ -95,7 +95,11 @@ int main(int argc, const char * argv[]) {
                                         break;
                                 case 198930448 : // eyr
                                         //eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+if (value.length != 4 || [value intValue] < 2020 || [value intValue] > 2030) {
+                                                NSLog(@"%@Invalid eyr: %@", blank, value);
+                                                valid = NO;
                                         }
+break;
                                 case 47254371 : // hgt
                                         //hgt (Height) - a number followed by either cm or in:
                                                 //        If cm, the number must be at least 150 and at most 193.
