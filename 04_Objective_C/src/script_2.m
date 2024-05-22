@@ -81,6 +81,10 @@ int main(int argc, const char * argv[]) {
                         switch([key hash]) {
                                 case 81524269: // byr
                                         //byr (Birth Year) - four digits; at least 1920 and at most 2002.
+                                        if (value.length != 4 || [value intValue] < 1920 || [value intValue] > 2002) {
+                                                NSLog(@"%@Invalid byr: %@", blank, value);
+                                                valid = NO;
+                                        }
                                         break;
                                 case 87036564 : // iyr
                                         //iyr (Issue Year) - four digits; at least 2010 and at most 2020.
