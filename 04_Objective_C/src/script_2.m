@@ -78,6 +78,33 @@ int main(int argc, const char * argv[]) {
                 for (int k = 0; k < [keys count]; k++) {
                         NSString *key = [keys objectAtIndex:k];
                         NSString *value = [passportDict objectForKey:key];
+                        switch([key hash]) {
+                                case 81524269: // byr
+                                        //byr (Birth Year) - four digits; at least 1920 and at most 2002.
+                                        break;
+                                case 87036564 : // iyr
+                                        //iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+                                        break;
+                                case 198930448 : // eyr
+                                        //eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+                                        }
+                                case 47254371 : // hgt
+                                        //hgt (Height) - a number followed by either cm or in:
+                                                //        If cm, the number must be at least 150 and at most 193.
+                                                //        If in, the number must be at least 59 and at most 76.
+                                        break;
+                                case 47110359 : // hcl
+                                        //hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
+                                        break;
+                                case 198139636 : // ecl
+                                        //ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+                                        break;
+                                case 91973405 : // pid
+                                        //pid (Passport ID) - a nine-digit number, including leading zeroes.
+                                       break;
+                                case 120084208 : // cid
+                                        //cid (Country ID) - ignored, missing or not.
+                                        break;
                         }
                 }
 
