@@ -1,32 +1,34 @@
 #import <Foundation/Foundation.h>
 
 int main(int argc, const char * argv[]) {
+        // blank = \r + 40 spaces + \r
+        NSString *blank = @"\r                                        \r";
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
         // Read file content
         if (argc < 2) {
-            NSLog(@"\rUsage: %s <filename>", argv[0]);
+            NSLog(@"%@Usage: %s <filename>", blank, argv[0]);
             return 1;
         }
 
         NSString *filePath = [NSString stringWithUTF8String:argv[1]];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         if (!fileData) {
-            NSLog(@"\rCould not read file %@", [NSString stringWithUTF8String:argv[1]]);
+            NSLog(@"%@Could not read file %@", blank, [NSString stringWithUTF8String:argv[1]]);
             return 1;
         }
 
         NSString *fileContent = [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];
         if (!fileContent) {
-            NSLog(@"\rCould not decode file content");
+            NSLog(@"%@Could not decode file content", blank);
             return 1;
         }
 
-        NSLog(@"\r%@", fileContent);
+        NSLog(@"%@%@", blank, fileContent);
 
         // Get the passports (passports are separated by a blank line: \n\n)
         NSMutableArray *passports = [NSMutableArray arrayWithArray:[fileContent componentsSeparatedByString:@"\n\n"]];
-        NSLog(@"\rPassports: %@\n", passports);
+        NSLog(@"%@Passports: %@\n", blank, passports);
 
         NSInteger count = 0;
 
@@ -35,11 +37,11 @@ int main(int argc, const char * argv[]) {
                 // replace \n with space in passports
                 NSString *passport = [passports objectAtIndex:i];
                 passport = [passport stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-                NSLog(@"\rPassport %d: %@", i, passport);
+                NSLog(@"%@Passport %d: %@", blank, i, passport);
 
                 // split passport on spaces
                 NSArray *passportFields = [passport componentsSeparatedByString:@" "];
-                NSLog(@"\rPassport fields: %@", passportFields);
+                NSLog(@"%@Passport fields: %@", blank, passportFields);
 
                 // remove empty fields
                 // create dictionary from passport fields (passwords fields are in format key:value)
@@ -65,17 +67,17 @@ int main(int argc, const char * argv[]) {
                         }
                 }
                 if (valid) {
-                        NSLog(@"\rValid passport: %@", passportDict);
+                        NSLog(@"%@Valid passport: %@", blank, passportDict);
                         count += 1;
                 }
 
-                NSLog(@"\rPassport dictionary: %@", passportDict);
+                NSLog(@"%@Passport dictionary: %@", blank, passportDict);
 
                 [parsedPassports addObject:passportDict];
         }
 
-        NSLog(@"\rParsed passports: %@", parsedPassports);
-        NSLog(@"\r---\nValid passports: %d\n", count);
+        NSLog(@"%@Parsed passports: %@", blank, parsedPassports);
+        NSLog(@"%@---\nValid passports: %d\n", blank, count);
 
         // Exit program
         [pool drain];
