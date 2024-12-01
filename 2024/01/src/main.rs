@@ -1,6 +1,17 @@
 fn main() {
 	let input = get_input();
-	let (left_numbers, right_numbers) = split_input_in_lists(&input);
+	let (mut left_numbers, mut right_numbers) = split_input_in_lists(&input);
+
+	// sort both lists
+	left_numbers.sort();
+	right_numbers.sort();
+
+	let mut total_diff = 0;
+	for i in 0..left_numbers.len() {
+		total_diff += (left_numbers[i] - right_numbers[i]).abs();
+	}
+
+	println!("The total difference is: {}", total_diff);
 }
 
 /// Get the input from the input.txt file
