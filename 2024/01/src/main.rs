@@ -2,7 +2,8 @@ fn main() {
 	let input = get_input();
 	let (left_numbers, right_numbers) = split_input_in_lists(&input);
 
-	println!("The total difference is: {}", get_total_diff(left_numbers, right_numbers));
+	println!("The total difference is: {}", get_total_diff(left_numbers.clone(), right_numbers.clone()));
+	println!("The total similarity score is: {}", get_total_similarity_score(left_numbers, right_numbers));
 }
 
 /// Get the input from the input.txt file
@@ -37,4 +38,18 @@ fn get_total_diff(mut left_numbers: Vec<i32>, mut right_numbers: Vec<i32>) -> i3
 	}
 
 	total_diff
+}
+
+fn get_total_similarity_score(left_numbers: Vec<i32>, right_numbers: Vec<i32>) -> i32 {
+	let mut total_similarity_score = 0;
+
+	// Multiply left_number[i] by the amount of times it appears in right_numbers
+	for i in 0..left_numbers.len() {
+		total_similarity_score += left_numbers[i] *
+			right_numbers.iter()
+			.filter(|&x| *x == left_numbers[i])
+			.count() as i32;
+	}
+
+	total_similarity_score
 }
