@@ -2,15 +2,22 @@ class Script2 {
 	static function main() {
 		var content:Array<String> = get_input();
 
-		var max_id = 0;
+		var ids:Array<Int> = [];
 		for (line in content) {
 			var seat:{row:Int,column:Int,id:Int} = parse_input(line);
-			if (seat.id > max_id) {
-				max_id = seat.id;
-			}
+			ids.push(seat.id);
 		}
 
-		Sys.println("Max ID: " + max_id);
+		ids.sort(function(a:Int, b:Int):Int {
+			return a - b;
+		});
+
+		for (i in 0...ids.length) {
+			if (ids[i] + 1 != ids[i + 1]) {
+				trace("Your seat is: " + (ids[i] + 1));
+				break;
+			}
+		}
 	}
 
 	static function get_input():Array<String> {
