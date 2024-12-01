@@ -95,15 +95,33 @@ int main(int argc, const char * argv[]) {
 					break;
 				case 198930448 : // eyr
 					//eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
-if (value.length != 4 || [value intValue] < 2020 || [value intValue] > 2030) {
+					if (value.length != 4 || [value intValue] < 2020 || [value intValue] > 2030) {
 						NSLog(@"%@Invalid eyr: %@", blank, value);
 						valid = NO;
 					}
-break;
+					break;
 				case 47254371 : // hgt
 					//hgt (Height) - a number followed by either cm or in:
+					if ([value hasSuffix:@"cm"]) {
 						//	If cm, the number must be at least 150 and at most 193.
+						int height = [[value substringToIndex:[value length] - 2] intValue];
+						if (height < 150 || height > 193) {
+							NSLog(@"%@Invalid hgt: %@", blank, value);
+							valid = NO;
+						}
+					}
+					else if ([value hasSuffix:@"in"]) {
 						//	If in, the number must be at least 59 and at most 76.
+						int height = [[value substringToIndex:[value length] - 2] intValue];
+						if (height < 59 || height > 76) {
+							NSLog(@"%@Invalid hgt: %@", blank, value);
+							valid = NO;
+						}
+					}
+					else {
+						NSLog(@"%@Invalid hgt: %@", blank, value);
+						valid = NO;
+					}
 					break;
 				case 47110359 : // hcl
 					//hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
@@ -124,7 +142,19 @@ break;
 					break;
 				case 91973405 : // pid
 					//pid (Passport ID) - a nine-digit number, including leading zeroes.
-					   break;
+					if (value.length != 9) {
+						NSLog(@"%@Invalid pid: %@", blank, value);
+						valid = NO;
+						break;
+					}
+					for (int l = 0; l < value.length; l++) {
+						if (!isdigit([value characterAtIndex:l])) {
+							NSLog(@"%@Invalid pid: %@", blank, value);
+							valid = NO;
+							break;
+						}
+					}
+					break;
 				case 120084208 : // cid
 					//cid (Country ID) - ignored, missing or not.
 					break;
