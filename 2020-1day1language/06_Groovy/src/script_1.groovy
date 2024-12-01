@@ -1,6 +1,8 @@
 class Script1 {
 	static main(String[] args) {
-		println(get_file_input(args))
+		String[][] answers = get_file_input(args).split("\n\n").collect { it.split("\n") }
+		String[] unique_answers = answers.collect { it.join().toSet().join() }
+		println(unique_answers.collect { it.size() }.sum())
 	}
 
 	static String get_file_input(String[] args) {
