@@ -3,7 +3,7 @@ class Script1 {
 		var content:Array<String> = get_input();
 
 		for (line in content) {
-			var seat:Array<Int> = parse_input(line);
+			var seat:{row:Int,column:Int,id:Int} = parse_input(line);
 			Sys.println(seat);
 		}
 	}
@@ -17,7 +17,7 @@ class Script1 {
 		});
 	}
 
-	static function parse_input(input:String):Array<Int> {
+	static function parse_input(input:String):{row:Int,column:Int,id:Int} {
 		// the inputs are dormated as such:
 		// the first 7 character are the row, they are either F or B
 		// F means the lower half, B means the upper half, the possible range is 0-127
@@ -70,6 +70,6 @@ class Script1 {
 			}
 		}
 
-		return [row, column];
+		return {row: row, column: column, id: row * 8 + column};
 	}
 }
