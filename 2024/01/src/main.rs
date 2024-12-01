@@ -1,17 +1,8 @@
 fn main() {
 	let input = get_input();
-	let (mut left_numbers, mut right_numbers) = split_input_in_lists(&input);
+	let (left_numbers, right_numbers) = split_input_in_lists(&input);
 
-	// sort both lists
-	left_numbers.sort();
-	right_numbers.sort();
-
-	let mut total_diff = 0;
-	for i in 0..left_numbers.len() {
-		total_diff += (left_numbers[i] - right_numbers[i]).abs();
-	}
-
-	println!("The total difference is: {}", total_diff);
+	println!("The total difference is: {}", get_total_diff(left_numbers, right_numbers));
 }
 
 /// Get the input from the input.txt file
@@ -32,4 +23,18 @@ fn split_input_in_lists(input: &str) -> (Vec<i32>, Vec<i32>) {
 	}
 
 	(left_numbers, right_numbers)
+}
+
+/// Get the difference between the N th smallest left number and the N th smallest right number
+/// Does this for all N and returns the sum of all differences
+fn get_total_diff(mut left_numbers: Vec<i32>, mut right_numbers: Vec<i32>) -> i32 {
+	left_numbers.sort();
+	right_numbers.sort();
+
+	let mut total_diff = 0;
+	for i in 0..left_numbers.len() {
+		total_diff += (left_numbers[i] - right_numbers[i]).abs();
+	}
+
+	total_diff
 }
