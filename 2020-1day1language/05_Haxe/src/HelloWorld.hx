@@ -1,6 +1,6 @@
 class HelloWorld {
 	static function main() {
-		trace("Hello, World!");
+		Sys.println("Hello, World!");
 	}
 }
 
