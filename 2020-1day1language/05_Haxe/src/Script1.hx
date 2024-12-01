@@ -2,10 +2,15 @@ class Script1 {
 	static function main() {
 		var content:Array<String> = get_input();
 
+		var max_id = 0;
 		for (line in content) {
 			var seat:{row:Int,column:Int,id:Int} = parse_input(line);
-			Sys.println(seat);
+			if (seat.id > max_id) {
+				max_id = seat.id;
+			}
 		}
+
+		Sys.println("Max ID: " + max_id);
 	}
 
 	static function get_input():Array<String> {
