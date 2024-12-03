@@ -1,4 +1,4 @@
-class ArrayList[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
+class ArrayList2[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
   val array = new Array[T](maxSize)
   var length = 0
   def apply(index: Int): T = {
@@ -8,7 +8,7 @@ class ArrayList[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
     array(length) = value
     length += 1
   }
-  def copyTo(other: ArrayList[T]): Unit = {
+  def copyTo(other: ArrayList2[T]): Unit = {
     for (i <- 0 until length) {
       other.add(array(i))
     }
@@ -16,12 +16,12 @@ class ArrayList[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
   def empty(): Unit = {
     length = 0
   }
-  def copy(): ArrayList[T] = {
-    val out = new ArrayList[T](maxSize)
+  def copy(): ArrayList2[T] = {
+    val out = new ArrayList2[T](maxSize)
     copyTo(out)
     return out
   }
-  def replaceWith(other: ArrayList[T]): Unit = {
+  def replaceWith(other: ArrayList2[T]): Unit = {
     empty()
     other.copyTo(this)
   }
@@ -38,15 +38,15 @@ class ArrayList[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
       f(array(i))
     }
   }
-  def copyIfNotExists(other: ArrayList[T]): Unit = {
+  def copyIfNotExists(other: ArrayList2[T]): Unit = {
     for (i <- 0 until array.length) {
       if (!other.any(_ == array(i))) {
         other.add(array(i))
       }
     }
   }
-  def filter(f: T => Boolean): ArrayList[T] = {
-    val out = new ArrayList[T](maxSize)
+  def filter(f: T => Boolean): ArrayList2[T] = {
+    val out = new ArrayList2[T](maxSize)
     for (i <- 0 until length) {
       if (f(array(i))) {
         out.add(array(i))
@@ -56,26 +56,32 @@ class ArrayList[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
   }
 }
 
-class Bag(val color: String, val contains: Array[String]) {
+class ColorCount(val color: String, val count: Int) {
+  override def toString(): String = {
+    s"$count ${color}"
+  }
+}
+
+class Bag2(val color: String, val contains: Array[ColorCount]) {
   override def toString(): String = {
     s"$color: ${contains.mkString(", ")}"
   }
-  def canContain(bag: Bag): Boolean = {
-    contains.contains(bag.color)
+  def canContain(bag: Bag2): Boolean = {
+    contains.map(_.color).contains(bag.color)
   }
-  def canContain(bags: ArrayList[Bag]): Boolean = {
+  def canContain(bags: ArrayList2[Bag2]): Boolean = {
     bags.any(canContain)
   }
 }
 
-object Script1 {
+object Script2 {
   def main(args: Array[String]) = {
     val data = readFile(args)
 
-    val can_contain = new ArrayList[Bag](data.length)
-    val new_can_contain = new ArrayList[Bag](data.length)
-    new_can_contain.add(new Bag("shiny gold", Array()))
-    val old_can_contain = new ArrayList[Bag](data.length)
+    val can_contain = new ArrayList2[Bag2](data.length)
+    val new_can_contain = new ArrayList2[Bag2](data.length)
+    new_can_contain.add(new Bag2("shiny gold", Array()))
+    val old_can_contain = new ArrayList2[Bag2](data.length)
 
     while
       old_can_contain.replaceWith(new_can_contain)
@@ -91,7 +97,7 @@ object Script1 {
     println(out.length)
   }
 
-  def readFile(args: Array[String]): Array[Bag] = {
+  def readFile(args: Array[String]): Array[Bag2] = {
     if (args.length != 1) {
       println("Usage: scala script_1.scala <file>")
       sys.exit(1)
@@ -103,14 +109,15 @@ object Script1 {
     // split the second part on commas, trim them and remove the last word in it
     val contains = bags.map((bag: Array[String]) => bag(1).split(",").map(_.trim().split(" ").dropRight(1).mkString(" ")))
     // if the contain is "no other", then the array is empty
-    val out = new Array[Bag](bags.length)
+    val out = new Array[Bag2](bags.length)
     for (i <- 0 until bags.length) {
       if (contains(i).length == 1 && contains(i)(0) == "no other") {
-        out(i) = new Bag(bags(i)(0), Array())
+        out(i) = new Bag2(bags(i)(0), Array())
       } else {
         // otherwise remove the first word
-        contains(i) = contains(i).map(_.split(" ").drop(1).mkString(" "))
-        out(i) = new Bag(bags(i)(0), contains(i))
+        val count = contains(i).map(_.split(" ")(0).toInt)
+        val color = contains(i).map(_.split(" ").drop(1).mkString(" "))
+        out(i) = new Bag2(bags(i)(0), color.zip(count).map((x) => new ColorCount(x._1, x._2)))
       }
     }
     return out
