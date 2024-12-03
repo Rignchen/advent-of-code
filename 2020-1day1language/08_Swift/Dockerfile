@@ -1,4 +1,4 @@
-FROM swift:5.9.2-rhel-ubi9-slim
+FROM swift:6.0.2
 COPY ./src /app
 COPY ./data /app/data
 WORKDIR /app

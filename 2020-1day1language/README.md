@@ -54,7 +54,7 @@ Here's the list of docker images I will be using:
 - C++: gcc:12.3.0-bookworm
 - Ruby: ruby:3.3.1-bullseye
 - Go: golang:1.22.3-alpine3.19
-- Swift: swift:5.9.2-rhel-ubi9-slim
+- Swift: swift:6.0.2
 - Groovy: groovy:jdk21
 - Haxe: haxe:4.3.4-buster
 - Objective C: custom docker image, see [Dockerfile](./04_Objective-C/Dockerfile)
