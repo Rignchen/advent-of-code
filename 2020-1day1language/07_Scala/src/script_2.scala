@@ -54,11 +54,22 @@ class ArrayList2[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
     }
     return out
   }
+  def indexOf(f: T => Boolean): Int = {
+    for (i <- 0 until length) {
+      if (f(array(i))) {
+        return i
+      }
+    }
+    return -1
+  }
 }
 
-class ColorCount(val color: String, val count: Int) {
+class ColorCount(val color: String, var count: Int) {
   override def toString(): String = {
     s"$count ${color}"
+  }
+  def add(count: Int): Unit = {
+    this.count += count
   }
 }
 
@@ -72,29 +83,23 @@ class Bag2(val color: String, val contains: Array[ColorCount]) {
   def canContain(bags: ArrayList2[Bag2]): Boolean = {
     bags.any(canContain)
   }
+  
+  def countTotalBagContainedIn(rules: Array[Bag2]): Int = {
+    var num = 1
+    for (i <- 0 until contains.length) {
+      val bag = rules.filter(_.color == contains(i).color)(0)
+      num = num + contains(i).count * bag.countTotalBagContainedIn(rules)
+    }
+    num
+  }
 }
 
 object Script2 {
   def main(args: Array[String]) = {
     val data = readFile(args)
-
-    val can_contain = new ArrayList2[Bag2](data.length)
-    val new_can_contain = new ArrayList2[Bag2](data.length)
-    new_can_contain.add(new Bag2("shiny gold", Array()))
-    val old_can_contain = new ArrayList2[Bag2](data.length)
-
-    while
-      old_can_contain.replaceWith(new_can_contain)
-      new_can_contain.empty()
-      data.filter(_.canContain(old_can_contain)).foreach(new_can_contain.add)
-      new_can_contain.copyIfNotExists(can_contain)
-      new_can_contain.length != 0
-    do ()
-
-    val out = can_contain.filter(_ != null)
-
-    out.forEach(println)
-    println(out.length)
+    val goldBag = data.filter(_.color == "shiny gold")(0)
+    val num = goldBag.countTotalBagContainedIn(data)
+    println(num - 1)
   }
 
   def readFile(args: Array[String]): Array[Bag2] = {
