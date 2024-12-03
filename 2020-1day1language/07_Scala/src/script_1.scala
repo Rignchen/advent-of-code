@@ -63,17 +63,32 @@ class Bag(val color: String, val contains: Array[String]) {
   def canContain(bag: Bag): Boolean = {
     contains.contains(bag.color)
   }
-  def canContain(bags: Array[Bag]): Boolean = {
-    bags.exists(canContain)
+  def canContain(bags: ArrayList[Bag]): Boolean = {
+    bags.any(canContain)
   }
 }
 
 object Script1 {
   def main(args: Array[String]) = {
     val data = readFile(args)
-    val can_contain = new Array[Bag](1)
-    can_contain(0) = new Bag("shiny gold", Array())
-    data.filter(_.canContain(can_contain)).foreach(println)
+
+    val can_contain = new ArrayList[Bag](data.length)
+    val new_can_contain = new ArrayList[Bag](data.length)
+    new_can_contain.add(new Bag("shiny gold", Array()))
+    val old_can_contain = new ArrayList[Bag](data.length)
+
+    while
+      old_can_contain.replaceWith(new_can_contain)
+      new_can_contain.empty()
+      data.filter(_.canContain(old_can_contain)).foreach(new_can_contain.add)
+      new_can_contain.copyIfNotExists(can_contain)
+      new_can_contain.length != 0
+    do ()
+
+    val out = can_contain.filter(_ != null)
+
+    out.forEach(println)
+    println(out.length)
   }
 
   def readFile(args: Array[String]): Array[Bag] = {
