@@ -2,12 +2,16 @@ class Bag(val color: String, val contains: Array[String]) {
   override def toString(): String = {
     s"$color: ${contains.mkString(", ")}"
   }
+
+  def canContain(bag: Bag): Boolean = {
+    contains.contains(bag.color)
+  }
 }
 
 object Script1 {
   def main(args: Array[String]) = {
     val data = readFile(args)
-    data.foreach(println)
+    data.filter(_.canContain(new Bag("shiny gold", Array()))).foreach(println)
   }
 
   def readFile(args: Array[String]): Array[Bag] = {
