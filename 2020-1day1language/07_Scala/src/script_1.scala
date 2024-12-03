@@ -1,3 +1,61 @@
+class ArrayList[T](maxSize: Int)(using m: scala.reflect.Manifest[T]) {
+  val array = new Array[T](maxSize)
+  var length = 0
+  def apply(index: Int): T = {
+    array(index)
+  }
+  def add(value: T): Unit = {
+    array(length) = value
+    length += 1
+  }
+  def copyTo(other: ArrayList[T]): Unit = {
+    for (i <- 0 until length) {
+      other.add(array(i))
+    }
+  }
+  def empty(): Unit = {
+    length = 0
+  }
+  def copy(): ArrayList[T] = {
+    val out = new ArrayList[T](maxSize)
+    copyTo(out)
+    return out
+  }
+  def replaceWith(other: ArrayList[T]): Unit = {
+    empty()
+    other.copyTo(this)
+  }
+  def any(f: T => Boolean): Boolean = {
+    for (i <- 0 until length) {
+      if (f(array(i))) {
+        return true
+      }
+    }
+    return false
+  }
+  def forEach(f: T => Unit): Unit = {
+    for (i <- 0 until length) {
+      f(array(i))
+    }
+  }
+  def copyIfNotExists(other: ArrayList[T]): Unit = {
+    for (i <- 0 until array.length) {
+      if (!other.any(_ == array(i))) {
+        other.add(array(i))
+      }
+    }
+  }
+  def filter(f: T => Boolean): ArrayList[T] = {
+    val out = new ArrayList[T](maxSize)
+    for (i <- 0 until length) {
+      if (f(array(i))) {
+        out.add(array(i))
+      }
+    }
+    return out
+  }
+}
+
 class Bag(val color: String, val contains: Array[String]) {
   override def toString(): String = {
     s"$color: ${contains.mkString(", ")}"
