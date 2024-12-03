@@ -38,8 +38,8 @@ if ! [ "$1" ]; then
 	# check if 6am has passed
 	if [ $(date +%H) -lt 6 ]; then
 		# wait until 6am
-		printf "Waiting until 6am to create new day\n"
 		WAIT=$((((6 - $(date +%H)) * 60 - $(date +%M)) * 60 - $(date +%S)))
+		printf "Waiting until 6am to create new day($WAIT sec)\n"
 		sleep $WAIT
 	fi
 else
