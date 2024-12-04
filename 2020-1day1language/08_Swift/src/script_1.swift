@@ -1,3 +1,77 @@
+import Foundation
+
+func getInputs() -> [String] {
+	// get the file name from the command line
+	if CommandLine.argc < 2 {
+		print("Usage: swift script_1.swift <input_file>")
+		return []
+	}
+	let file = CommandLine.arguments[1]
+
+	let contents = getInputValue(name: file)
+	let lines = contents.split(separator: "\n")
+	return lines.map { String($0) }
+}
+
+func main() {
+	let lines = getInputs()
+	if lines.isEmpty {
+		return
+	}
+
+	let acc = runProgram(lines: lines)
+	print(acc)
+}
+
+func runProgram(lines: [String]) -> Int {
+	var acc = 0
+	var pos = 0
+
+	// instruction argument
+	let instructions = lines.map { $0.split(separator: " ") }
+	var found: [Int] = []
+
+	while pos < lines.count {
+		let instruction = instructions[pos]
+
+		if !found.contains(pos) {
+			found.append(pos)
+		} else {
+			break
+		}
+
+		switch instruction[0] {
+		case "acc":
+			acc += Int(instruction[1])!
+			pos += 1
+		case "jmp":
+			pos += Int(instruction[1])!
+		default:
+			pos += 1
+		}
+	}
+
+	return acc
+}
+
+main()
+
+func getInputValue(name: String) -> String {
+    switch name {
+    case "example":
+        return """
+nop +0
+acc +1
+jmp +4
+acc +3
+jmp -3
+acc -99
+acc +1
+jmp -4
+acc +6
+"""
+    case "input":
+        return """
 acc +0
 acc -11
 acc -19
@@ -652,3 +726,8 @@ acc +37
 nop -375
 acc +38
 jmp +1
+"""
+    default:
+        return ""
+    }
+}
