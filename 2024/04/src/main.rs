@@ -1,6 +1,6 @@
 fn main() {
 	let input = get_input();
-	let result = find_xmas(&input);
+	let result = find_mas_in_shape_x(&input);
 	println!("result: {}", result);
 }
 
@@ -8,6 +8,35 @@ fn get_input() -> String {
 	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	contents
+}
+
+/// find all the "mas" shaped as an "X" in the input
+/// ```text
+/// M.S
+/// .A.
+/// S.M
+/// ```
+fn find_mas_in_shape_x(input: &str) -> i32 {
+	let mut count = 0;
+	let line_count = input.lines().count();
+	let line_len = input.lines().next().unwrap().len();
+	let lines = input.lines().collect::<Vec<&str>>();
+
+	for i in 1..line_count-1 {
+		for j in 1..line_len-1 {
+			if lines[i].chars().nth(j).unwrap() == 'A' {
+				if 
+					  ((lines[i-1].chars().nth(j-1).unwrap() == 'M' && lines[i+1].chars().nth(j+1).unwrap() == 'S')
+					|| (lines[i-1].chars().nth(j-1).unwrap() == 'S' && lines[i+1].chars().nth(j+1).unwrap() == 'M'))
+					&&((lines[i-1].chars().nth(j+1).unwrap() == 'M' && lines[i+1].chars().nth(j-1).unwrap() == 'S')
+					|| (lines[i-1].chars().nth(j+1).unwrap() == 'S' && lines[i+1].chars().nth(j-1).unwrap() == 'M'))
+					{
+						count += 1;
+					}
+			}
+		}
+	}
+	count
 }
 
 /// find all instences of the word "xmas"
