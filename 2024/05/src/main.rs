@@ -5,9 +5,13 @@ fn main() {
 	let filtered = input.iter().filter(|line| {line.len() > 0}).filter(|line| !is_valid(&hash, line)).collect::<Vec<_>>();
 	let mut ordered: Vec<Vec<i32>> = Vec::new();
 	filtered.into_iter().for_each(|line| {
+		println!("- {:?}", line);
 		ordered.push(order_list(&hash, line));
 	});
 	println!("{:?}", ordered);
+	println!("{}", ordered.into_iter().map(|x| {
+		x[x.len()/2]
+	}).sum::<i32>());
 }
 
 fn is_valid(hash: &HashMap<i32, Vec<i32>>, line: &Vec<i32>) -> bool {
@@ -49,7 +53,7 @@ fn order_list(order: &HashMap<i32, Vec<i32>>, line: &Vec<i32>) -> Vec<i32> {
 }
 
 fn get_input() -> (HashMap<i32, Vec<i32>>, Vec<Vec<i32>>) {
-	let file = "data/example.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 
 	let mut parts = contents.split("\n\n");
