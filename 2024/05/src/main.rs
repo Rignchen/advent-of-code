@@ -2,12 +2,12 @@ use std::collections::HashMap;
 
 fn main() {
 	let (hash, input) = get_input();
-	let mut filtered = input.iter().filter(|line| {line.len() > 0}).filter(|line| !is_valid(&hash, line)).collect::<Vec<_>>();
-	println!("{:?}", filtered);
-	println!("{}", filtered.into_iter().map(
-		//get the value in the middle of the vector
-		|x| x[x.len() / 2]
-	).sum::<i32>());
+	let filtered = input.iter().filter(|line| {line.len() > 0}).filter(|line| !is_valid(&hash, line)).collect::<Vec<_>>();
+	let mut ordered: Vec<Vec<i32>> = Vec::new();
+	filtered.into_iter().for_each(|line| {
+		ordered.push(order_list(&hash, line));
+	});
+	println!("{:?}", ordered);
 }
 
 fn is_valid(hash: &HashMap<i32, Vec<i32>>, line: &Vec<i32>) -> bool {
@@ -24,6 +24,28 @@ fn is_valid(hash: &HashMap<i32, Vec<i32>>, line: &Vec<i32>) -> bool {
 		}
 	}
 	valid
+}
+
+fn order_list(order: &HashMap<i32, Vec<i32>>, line: &Vec<i32>) -> Vec<i32> {
+	let empty = Vec::new();
+	let mut ordered: Vec<i32> = Vec::new();
+	for i in 0..line.len() {
+		let mut inserted = false;
+		let value = line[i];
+		let after = order.get(&value).unwrap_or(&empty);
+		for j in 0..ordered.len() {
+			if after.contains(&ordered[j]) {
+				ordered.insert(j, value);
+				println!("{:?}, j: {}, v: {}", ordered, j, value);
+				inserted = true;
+				break;
+			}
+		}
+		if !inserted {
+			ordered.push(value);
+		}
+	}
+	ordered
 }
 
 fn get_input() -> (HashMap<i32, Vec<i32>>, Vec<Vec<i32>>) {
