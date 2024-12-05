@@ -22,10 +22,14 @@ fn main() {
 		valid
 	}).collect::<Vec<&Vec<i32>>>();
 	println!("{:?}", filtered);
+	println!("{}", filtered.into_iter().map(
+		//get the value in the middle of the vector
+		|x| x[x.len() / 2]
+	).sum::<i32>());
 }
 
 fn get_input() -> (HashMap<i32, Vec<i32>>, Vec<Vec<i32>>) {
-	let file = "data/example.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 
 	let mut parts = contents.split("\n\n");
