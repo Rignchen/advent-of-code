@@ -2,25 +2,7 @@ use std::collections::HashMap;
 
 fn main() {
 	let (hash, input) = get_input();
-	// for each input, ensure that the previous values are not in the vector of values for this key
-	let filtered = input.iter().filter(|line| {
-		if line.len() == 0 {
-			return false;
-		}
-		let mut valid = true;
-		let empty = Vec::new();
-		for i in 0..line.len() {
-			if i > 0 {
-				let prev = line[0..i].to_vec();
-				let vector = hash.get(&line[i]).unwrap_or(&empty);
-				if prev.iter().any(|x| vector.contains(x)) {
-					valid = false;
-					break;
-				}
-			}
-		}
-		valid
-	}).collect::<Vec<&Vec<i32>>>();
+	let mut filtered = input.iter().filter(|line| {line.len() > 0}).filter(|line| !is_valid(&hash, line)).collect::<Vec<_>>();
 	println!("{:?}", filtered);
 	println!("{}", filtered.into_iter().map(
 		//get the value in the middle of the vector
@@ -28,8 +10,24 @@ fn main() {
 	).sum::<i32>());
 }
 
+fn is_valid(hash: &HashMap<i32, Vec<i32>>, line: &Vec<i32>) -> bool {
+	let mut valid = true;
+	let empty = Vec::new();
+	for i in 0..line.len() {
+		if i > 0 {
+			let prev = line[0..i].to_vec();
+			let vector = hash.get(&line[i]).unwrap_or(&empty);
+			if prev.iter().any(|x| vector.contains(x)) {
+				valid = false;
+				break;
+			}
+		}
+	}
+	valid
+}
+
 fn get_input() -> (HashMap<i32, Vec<i32>>, Vec<Vec<i32>>) {
-	let file = "data/input.txt";
+	let file = "data/example.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 
 	let mut parts = contents.split("\n\n");
