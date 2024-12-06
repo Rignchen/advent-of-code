@@ -1,24 +1,34 @@
 fn main() {
 	let input = get_input();
-	let (mut guard, mut guard_direction, obstacles) = get_positions(&input);
-	let mut is_guard_out = false;
-	let max_x = input.lines().next().unwrap().len() as i32;
-	let max_y = input.lines().count() as i32;
+	let (guard, guard_direction, obstacles) = get_positions(&input);
+	let map_size = (input.lines().next().unwrap().len() as i32, input.lines().count() as i32);
 	let mut viewed_positions: Vec<Position> = Vec::new();
 
-	while !is_guard_out {
+	walk(guard, guard_direction, obstacles, map_size, |guard, _| {
 		if !viewed_positions.iter().any(|x| x.compare(&guard)) {
 			viewed_positions.push(guard.clone());
 		}
-		let next = guard.get_relative(guard_direction.next());
-		if obstacles.iter().any(|&x| x.compare(&next)) {
-			guard_direction = guard_direction.turn_right();
-		}
-		guard.goto(guard_direction.next());
-		is_guard_out = guard.x < 0 || guard.y < 0 || guard.x >= max_x || guard.y >= max_y;
-	}
+		false
+	});
 
 	println!("{}", viewed_positions.len());
+}
+
+fn walk(guard: Position, direction: Direction, obstacles: Vec<Position>, map: (i32,i32), mut early_break: impl FnMut(Position, Direction) -> bool) -> () {
+	let mut is_out = false;
+	let mut guard = guard;
+	let mut direction = direction;
+	while !is_out {
+		if early_break(guard, direction) {
+			break
+		}
+		let next = guard.get_relative(direction.next());
+		if obstacles.iter().any(|&x| x.compare(&next)) {
+			direction = direction.turn_right();
+		}
+		guard.goto(direction.next());
+		is_out = guard.x < 0 || guard.y < 0 || guard.x >= map.0 || guard.y >= map.1;
+	};
 }
 
 fn get_input() -> String {
@@ -28,13 +38,13 @@ fn get_input() -> String {
 }
 
 fn get_positions(input: &str) -> (Position, Direction, Vec<Position>) {
-	let mut lines = input.lines();
+	let lines = input.lines();
 	let mut guard = Position { x: 0, y: 0 }; 
 	let mut guard_direction = Direction::Up;
 	let mut obstacles: Vec<Position> = Vec::new();
 
 	for (i, line) in lines.enumerate() {
-		let mut chars = line.chars();
+		let chars = line.chars();
 		for (j, c) in chars.enumerate() {
 			let pos = Position { x: j as i32, y: i as i32 };
 			match c {
@@ -75,7 +85,7 @@ impl Position {
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 enum Direction {
 	Up,
 	Down,
@@ -91,7 +101,7 @@ impl Direction {
 			Direction::Left => (-1, 0),
 		}
 	}
-	fn turn_right(&self) -> Direction {
+	fn turn_right(&self) -> Self {
 		match self {
 			Direction::Up => Direction::Right,
 			Direction::Right => Direction::Down,
