@@ -1,9 +1,9 @@
 fn main() {
 	let input = get_input();
-	println!("{:?}", input.iter().filter(|c| can_be_calibrated(c.result, c.values.clone())).count());
+	println!("{:?}", input.iter().filter(|c| can_be_calibrated(c.result, c.values.clone())).map(|c| c.result).sum::<i64>());
 }
 
-fn can_be_calibrated(result: i32, mut values: Vec<i32>) -> bool {
+fn can_be_calibrated(result: i64, mut values: Vec<i64>) -> bool {
 	println!("{:?} {}", values, result);
 	if values.len() == 1 {
 		return values[0] == result;
@@ -27,12 +27,11 @@ fn get_value<T>(list: &mut Vec<T>, index: usize) -> T where T: Clone {
 }
 
 fn get_input() -> Vec<Callibration> {
-	let file = "data/example.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	// format: result: value1 value2 value3 ...
 	contents.lines().map(|s| {
 		let mut parts = s.split_whitespace();
-		println!("{:?}", parts.clone().collect::<Vec<&str>>());
 		let result = parts.next().unwrap().trim_end_matches(':').parse().unwrap();
 		let values = parts.map(|s| s.parse().unwrap()).collect();
 		Callibration { result, values }
@@ -41,6 +40,6 @@ fn get_input() -> Vec<Callibration> {
 
 #[derive(Debug)]
 struct Callibration {
-	result: i32,
-	values: Vec<i32>,
+	result: i64,
+	values: Vec<i64>,
 }
