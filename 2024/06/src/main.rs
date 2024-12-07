@@ -19,12 +19,12 @@ fn walk(guard: Position, direction: Direction, obstacles: Vec<Position>, map: (i
 	let mut guard = guard;
 	let mut direction = direction;
 	while !is_out {
+		let next = guard.get_relative(direction.next());
+		if obstacles.iter().any(|&x| x == next) {
+			direction = direction.turn_right();
+		}
 		if early_break(guard, direction) {
 			break
-		}
-		let next = guard.get_relative(direction.next());
-		if obstacles.iter().any(|&x| x.compare(&next)) {
-			direction = direction.turn_right();
 		}
 		guard.goto(direction.next());
 		is_out = guard.x < 0 || guard.y < 0 || guard.x >= map.0 || guard.y >= map.1;
@@ -43,20 +43,14 @@ fn get_positions(input: &str) -> (Position, Direction, Vec<Position>) {
 	let mut guard_direction = Direction::Up;
 	let mut obstacles: Vec<Position> = Vec::new();
 
-	for (i, line) in lines.enumerate() {
+	for (y, line) in lines.enumerate() {
 		let chars = line.chars();
-		for (j, c) in chars.enumerate() {
-			let pos = Position { x: j as i32, y: i as i32 };
+		for (x, c) in chars.enumerate() {
+			let pos = Position { x: x as i32, y: y as i32 };
 			match c {
-				'^' | 'v' | '<' | '>' => {
+				'^' => {
 					guard = pos;
-					guard_direction = match c {
-						'^' => Direction::Up,
-						'v' => Direction::Down,
-						'<' => Direction::Left,
-						'>' => Direction::Right,
-						_ => panic!("Invalid direction"),
-					};
+					guard_direction = Direction::Up;
 				}
 				'#' => obstacles.push(pos),
 				_ => (),
@@ -67,7 +61,7 @@ fn get_positions(input: &str) -> (Position, Direction, Vec<Position>) {
 	(guard, guard_direction, obstacles)
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 struct Position {
 	pub x: i32,
 	pub y: i32,
@@ -79,9 +73,6 @@ impl Position {
 	}
 	fn get_relative(&self, direction: (i32, i32)) -> Position {
 		Position { x: self.x + direction.0, y: self.y + direction.1 }
-	}
-	fn compare(&self, other: &Position) -> bool {
-		self.x == other.x && self.y == other.y
 	}
 }
 
