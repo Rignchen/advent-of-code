@@ -12,9 +12,19 @@ fi
 
 # get the input
 RESULT=$(../../input.sh $DAY)
-if [[ "$RESULT" == *"Please don't repeatedly request this endpoint before it unlocks!"* ]]; then
+ERROR=$?
+
+if [[ $ERROR -eq 0 ]]; then
+	case $RESULT in
+		*"Please don't repeatedly request this endpoint before it unlocks!"*)
+			ERROR=1
+			;;
+	esac
+fi
+
+if [[ $ERROR -ne 0 ]]; then
 	echo "$RESULT"
-	exit 1
+	exit $ERROR
 fi
 
 # save the input in a file
