@@ -33,7 +33,7 @@ fn get_value<T>(list: &mut Vec<T>, index: usize) -> T where T: Clone {
 }
 
 fn get_input() -> Vec<Callibration> {
-	let file = "data/example.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	// format: result: value1 value2 value3 ...
 	contents.lines().map(|s| {
