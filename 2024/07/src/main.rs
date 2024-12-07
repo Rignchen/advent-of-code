@@ -17,6 +17,12 @@ fn can_be_calibrated(result: i64, mut values: Vec<i64>) -> bool {
 		values[0] = interest.0 * interest.1;
 		is_calibrated = can_be_calibrated(result, values.clone());
 	}
+	if !is_calibrated {
+		print!("{} || {} = ", interest.0, interest.1);
+		// concatenate both values
+		values[0] = format!("{}{}", interest.0, interest.1).parse().unwrap();
+		is_calibrated = can_be_calibrated(result, values.clone());
+	}
 	is_calibrated
 }
 
@@ -27,7 +33,7 @@ fn get_value<T>(list: &mut Vec<T>, index: usize) -> T where T: Clone {
 }
 
 fn get_input() -> Vec<Callibration> {
-	let file = "data/input.txt";
+	let file = "data/example.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	// format: result: value1 value2 value3 ...
 	contents.lines().map(|s| {
