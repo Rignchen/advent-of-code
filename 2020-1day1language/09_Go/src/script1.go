@@ -7,9 +7,21 @@ import (
 )
 
 func main() {
-	content, err := os.ReadFile("data/example.txt")
+	input := get_input()
+	fmt.Println(input)
+}
+
+func get_input() []int {
+	if len(os.Args) < 2 {
+		log.Fatal("Usage: go run script1.go <filename>")
+	}
+	content, err := os.ReadFile(os.Args[1])
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(content))
+	var input []int
+	for _, line := range string(content) {
+		input = append(input, int(line))
+	}
+	return input
 }
