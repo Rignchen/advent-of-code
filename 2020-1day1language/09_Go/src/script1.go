@@ -15,8 +15,13 @@ func main() {
 		log.Fatal(err)
 	}
 	preamble := get_preamble(&input, preamble_size)
-	fmt.Println(input)
-	fmt.Println(preamble)
+	for _, value := range input {
+		if !is_sum_of_two(&preamble, value) {
+			fmt.Println(value)
+			break
+		}
+		preamble = append(preamble[1:], value)
+	}
 }
 
 func get_input() []int {
@@ -45,4 +50,16 @@ func get_preamble(input *[]int, preamble_size int) []int {
 	preamble := (*input)[:preamble_size]
 	*input = (*input)[preamble_size:]
 	return preamble
+}
+
+func is_sum_of_two(preamble *[]int, value int) bool {
+	// check if the value is the sum of two numbers in the preamble
+	for i, x := range *preamble {
+		for _, y := range (*preamble)[i+1:] {
+			if x + y == value {
+				return true
+			}
+		}
+	}
+	return false
 }
