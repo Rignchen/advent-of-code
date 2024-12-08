@@ -35,7 +35,7 @@ fn main() {
 				if !antinode.contains(&to_push) && to_push.in_map(map_size) {
 					antinode.push(to_push);
 				}
-				let to_push = other_position.from_vector_reverse(vector);
+				let to_push = other_position.from_vector(vector.reverse());
 				if !antinode.contains(&to_push) && to_push.in_map(map_size) {
 					antinode.push(to_push);
 				}
@@ -51,22 +51,33 @@ struct Position {
 	y: i32,
 }
 impl Position {
-	fn vector(&self, other: &Position) -> (i32, i32) {
-		((self.x - other.x), (self.y - other.y))
-	}
-	fn from_vector(&self, vector: (i32, i32)) -> Position {
-		Position {
-			x: self.x + vector.0,
-			y: self.y + vector.1,
+	fn vector(&self, other: &Position) -> Vector {
+		Vector {
+			x: self.x - other.x,
+			y: self.y - other.y,
 		}
 	}
-	fn from_vector_reverse(&self, vector: (i32, i32)) -> Position {
+	fn from_vector(&self, vector: Vector) -> Self {
 		Position {
-			x: self.x - vector.0,
-			y: self.y - vector.1,
+			x: self.x + vector.x,
+			y: self.y + vector.y,
 		}
 	}
 	fn in_map(&self, map_size: (i32, i32)) -> bool {
 		self.x >= 0 && self.y >= 0 && self.x < map_size.0 && self.y < map_size.1
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+struct Vector {
+	x: i32,
+	y: i32,
+}
+impl Vector {
+	fn reverse(&self) -> Vector {
+		Vector {
+			x: -self.x,
+			y: -self.y,
+		}
 	}
 }
