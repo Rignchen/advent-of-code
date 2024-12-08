@@ -30,19 +30,35 @@ fn main() {
 				if position == other_position {
 					continue;
 				}
-				let vector = position.vector(other_position);
-				let to_push = position.from_vector(vector);
-				if !antinode.contains(&to_push) && to_push.in_map(map_size) {
-					antinode.push(to_push);
-				}
-				let to_push = other_position.from_vector(vector.reverse());
-				if !antinode.contains(&to_push) && to_push.in_map(map_size) {
-					antinode.push(to_push);
-				}
+				let vector = position.vector(other_position).reduce();
+				add_antinode(&mut antinode, vector, *position, map_size);
+				add_antinode(&mut antinode, vector.reverse(), *other_position, map_size);
 			}
 		}
 	}
 	println!("{:?}", antinode.len());
+}
+
+fn add_antinode(antinode: &mut Vec<Position>, vector: Vector, position: Position, map_size: (i32, i32)) {
+	let mut to_push = position;
+	loop {
+		to_push = to_push.from_vector(vector);
+		if !to_push.in_map(map_size) {
+			break;
+		}
+		if !antinode.contains(&to_push) {
+			antinode.push(to_push);
+		}
+	}
+}
+
+pub fn gcd(mut a: i32, mut b: i32) -> i32 {
+	while b != 0 {
+		let t = b;
+		b = a % b;
+		a = t;
+	}
+	a
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -78,6 +94,13 @@ impl Vector {
 		Vector {
 			x: -self.x,
 			y: -self.y,
+		}
+	}
+	fn reduce(&self) -> Vector {
+		let gcd = gcd(self.x, self.y);
+		Vector {
+			x: self.x / gcd,
+			y: self.y / gcd,
 		}
 	}
 }
