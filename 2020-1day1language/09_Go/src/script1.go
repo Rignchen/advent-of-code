@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
+	"strconv"
 )
 
 func main() {
@@ -20,8 +22,14 @@ func get_input() []int {
 		log.Fatal(err)
 	}
 	var input []int
-	for _, line := range string(content) {
-		input = append(input, int(line))
+	for _, line := range strings.Split(string(content), "\n") {
+		if line != "" {
+			value, err := strconv.Atoi(line)
+			if err != nil {
+				log.Fatal(err)
+			}
+			input = append(input, value)
+		}
 	}
 	return input
 }
