@@ -19,7 +19,7 @@ fn main() {
 		}
 	}
 	println!("Trails: {:?}", trails);
-	println!("Sum: {}", trails.iter().map(|t| t.0).sum::<usize>());
+	println!("Sum: {}", trails.iter().map(|t| t.0).count());
 }
 
 fn find_trail_top(input: &str, x: usize, y: usize) -> Vec<(usize, usize)> {
@@ -34,42 +34,30 @@ fn find_trail_top(input: &str, x: usize, y: usize) -> Vec<(usize, usize)> {
 		input.lines().nth(y).unwrap().chars().nth(x - 1).unwrap().to_digit(10).unwrap() == current + 1 {
 		let result = find_trail_top(input, x - 1, y);
 		for r in result {
-			if !trail.contains(&r) {
-				trail.push(r);
-			}
+			trail.push(r);
 		}
 	}
 	if x + 1 < input.lines().nth(y).unwrap().len() &&
 		input.lines().nth(y).unwrap().chars().nth(x + 1).unwrap().to_digit(10).unwrap() == current + 1 {
 		let result = find_trail_top(input, x + 1, y);
 		for r in result {
-			if !trail.contains(&r) {
-				trail.push(r);
-			}
+			trail.push(r);
 		}
 	}
 	if y > 0 &&
 		input.lines().nth(y - 1).unwrap().chars().nth(x).unwrap().to_digit(10).unwrap() == current + 1 {
 		let result = find_trail_top(input, x, y - 1);
 		for r in result {
-			if !trail.contains(&r) {
-				trail.push(r);
-			}
+			trail.push(r);
 		}
 	}
 	if y + 1 < input.lines().count() &&
 		input.lines().nth(y + 1).unwrap().chars().nth(x).unwrap().to_digit(10).unwrap() == current + 1 {
 		let result = find_trail_top(input, x, y + 1);
 		for r in result {
-			if !trail.contains(&r) {
-				trail.push(r);
-			}
+			trail.push(r);
 		}
 	}
 
-	if current != 0 {
-		trail
-	} else {
-		vec![(trail.len(), 0)]
-	}
+	trail
 }
