@@ -5,7 +5,7 @@ cd $(dirname $0)
 DAY=$(echo $PWD | rev | cut -d'/' -f 2 | rev | sed 's/^0*//')
 
 # ensure the day is a number between 1 and 25 (included)
-if ! [[ "$DAY" =~ ^([1-9]|1\d|2[0-5])$ ]]; then
+if ! [[ "$DAY" =~ ^([1-9]|1[0-9]|2[0-5])$ ]]; then
 	echo "Invalid day \"$DAY\", must be a number between 1 and 25 (included)"
 	exit 1
 fi
