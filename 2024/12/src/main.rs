@@ -1,21 +1,26 @@
 use std::collections::HashMap;
 
 fn get_input() -> Vec<String> {
-	let file = "data/example2.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	contents.lines().map(|x| x.to_string()).collect()
 }
 
 fn main() {
 	let input = get_parcels(&get_input());
+	let mut result = 0;
 	for (c,p) in input.iter() {
 		println!("Parcel: {}", c);
 		let parcels = get_parcels_distinct(p);
 		for parcel in parcels {
 			println!("\t{:?}", parcel);
 			println!("\t\tSides: {}", get_sides_count(&parcel));
+			let value = get_sides_count(&parcel) * parcel.len() as i32;
+			println!("\t\tValue: {}", value);
+			result += get_sides_count(&parcel) * parcel.len() as i32;
 		}
 	}
+	println!("Result: {}", result);
 }
 
 fn get_parcels(map: &Vec<String>) -> HashMap<char, Vec<(i32, i32)>> {
