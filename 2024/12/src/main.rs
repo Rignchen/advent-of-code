@@ -1,22 +1,21 @@
 use std::collections::HashMap;
 
 fn get_input() -> Vec<String> {
-	let file = "data/example2.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	contents.lines().map(|x| x.to_string()).collect()
 }
 
 fn main() {
 	let input = get_parcels(&get_input());
-	for (parcel, coords) in input.iter() {
-		println!("Parcel: {}", parcel);
-		println!("\tTotal perimeter: {}", get_perimeter(coords));
-		let parcels = get_parcels_distinct(coords);
-		for (i, p) in parcels.iter().enumerate() {
-			println!("\tParcel {}", i);
-			println!("\t\tPerimeter: {}", get_perimeter(p));
+	let mut result = 0;
+	for p in input.values() {
+		let parcels = get_parcels_distinct(p);
+		for parcel in parcels {
+			result += get_perimeter(&parcel) * parcel.len() as i32;
 		}
 	}
+	println!("Result: {}", result);
 }
 
 fn get_parcels(map: &Vec<String>) -> HashMap<char, Vec<(i32, i32)>> {
@@ -54,4 +53,23 @@ fn get_parcels_distinct(map: &Vec<(i32, i32)>) -> Vec<Vec<(i32, i32)>> {
 		}
 	}
 	parcels
+}
+
+fn get_perimeter(parcel: &Vec<(i32, i32)>) -> i32 {
+	let mut perimeter = 0;
+	for (x, y) in parcel.iter() {
+		if !parcel.contains(&(x + 1, *y)) {
+			perimeter += 1;
+		}
+		if !parcel.contains(&(x - 1, *y)) {
+			perimeter += 1;
+		}
+		if !parcel.contains(&(*x, y + 1)) {
+			perimeter += 1;
+		}
+		if !parcel.contains(&(*x, y - 1)) {
+			perimeter += 1;
+		}
+	}
+	perimeter
 }
