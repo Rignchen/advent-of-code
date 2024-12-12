@@ -1,21 +1,21 @@
 use std::collections::HashMap;
 
 fn get_input() -> Vec<String> {
-	let file = "data/input.txt";
+	let file = "data/example2.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	contents.lines().map(|x| x.to_string()).collect()
 }
 
 fn main() {
 	let input = get_parcels(&get_input());
-	let mut result = 0;
-	for p in input.values() {
+	for (c,p) in input.iter() {
+		println!("Parcel: {}", c);
 		let parcels = get_parcels_distinct(p);
 		for parcel in parcels {
-			result += get_perimeter(&parcel) * parcel.len() as i32;
+			println!("\t{:?}", parcel);
+			println!("\t\tSides: {}", get_sides_count(&parcel));
 		}
 	}
-	println!("Result: {}", result);
 }
 
 fn get_parcels(map: &Vec<String>) -> HashMap<char, Vec<(i32, i32)>> {
@@ -72,4 +72,75 @@ fn get_perimeter(parcel: &Vec<(i32, i32)>) -> i32 {
 		}
 	}
 	perimeter
+}
+
+fn get_sides_count(parcel: &Vec<(i32, i32)>) -> i32 {
+	let mut sides = Vec::<(Direction, Vec<(i32, i32)>)>::new();
+	for (x, y) in parcel.iter() {
+		// Right
+		if !parcel.contains(&(x + 1, *y)) {
+			let filtered_sides: Vec<(Vec<(i32, i32)>, usize)> = sides.iter().zip(0..).filter(|s| s.0.0 == Direction::Right).map(|s| (s.0.1.clone(), s.1)).collect();
+			let mut has_side = false;
+			for s in filtered_sides {
+				if s.0.contains(&(*x, *y - 1)) {
+					sides[s.1].1.push((*x, *y));
+					has_side = true;
+				}
+			}
+			if !has_side {
+				sides.push((Direction::Right, vec![(*x, *y)]));
+			}
+		}
+		// Left
+		if !parcel.contains(&(x - 1, *y)) {
+			let filtered_sides: Vec<(Vec<(i32, i32)>, usize)> = sides.iter().zip(0..).filter(|s| s.0.0 == Direction::Left).map(|s| (s.0.1.clone(), s.1)).collect();
+			let mut has_side = false;
+			for s in filtered_sides {
+				if s.0.contains(&(*x, *y - 1)) {
+					sides[s.1].1.push((*x, *y));
+					has_side = true;
+				}
+			}
+			if !has_side {
+				sides.push((Direction::Left, vec![(*x, *y)]));
+			}
+		}
+		// Down
+		if !parcel.contains(&(*x, y + 1)) {
+			let filtered_sides: Vec<(Vec<(i32, i32)>, usize)> = sides.iter().zip(0..).filter(|s| s.0.0 == Direction::Down).map(|s| (s.0.1.clone(), s.1)).collect();
+			let mut has_side = false;
+			for s in filtered_sides {
+				if s.0.contains(&(*x - 1, *y)) {
+					sides[s.1].1.push((*x, *y));
+					has_side = true;
+				}
+			}
+			if !has_side {
+				sides.push((Direction::Down, vec![(*x, *y)]));
+			}
+		}
+		// Up
+		if !parcel.contains(&(*x, y - 1)) {
+			let filtered_sides: Vec<(Vec<(i32, i32)>, usize)> = sides.iter().zip(0..).filter(|s| s.0.0 == Direction::Up).map(|s| (s.0.1.clone(), s.1)).collect();
+			let mut has_side = false;
+			for s in filtered_sides {
+				if s.0.contains(&(*x - 1, *y)) {
+					sides[s.1].1.push((*x, *y));
+					has_side = true;
+				}
+			}
+			if !has_side {
+				sides.push((Direction::Up, vec![(*x, *y)]));
+			}
+		}
+	}
+	sides.len() as i32
+}
+
+#[derive(PartialEq)]
+enum Direction {
+	Up,
+	Down,
+	Left,
+	Right
 }
