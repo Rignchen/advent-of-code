@@ -9,13 +9,12 @@ fn get_input() -> Vec<ClawMachine> {
 
 fn main() {
 	let input = get_input();
-	for claw_machine in input {
-		println!("\n{:?}", claw_machine);
-		match solve_claw_machine(&claw_machine) {
-			Some((n, m)) => println!("n = {}, m = {}", n, m),
-			None => println!("No solution found"),
-		}
-	}
+	println!("{}",
+	         input.iter()
+	         .map(|x| solve_claw_machine(x))
+	         .filter(|x| x.is_some()).map(|x| x.unwrap())
+	         .map(|(n, m)| n*3 + m)
+	         .sum::<i32>());
 }
 
 fn solve_claw_machine(claw_machine: &ClawMachine) -> Option<(i32, i32)> {
