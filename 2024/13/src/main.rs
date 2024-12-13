@@ -9,7 +9,41 @@ fn get_input() -> Vec<ClawMachine> {
 
 fn main() {
 	let input = get_input();
-	println!("{:?}", input);
+	for claw_machine in input {
+		println!("\n{:?}", claw_machine);
+		match solve_claw_machine(&claw_machine) {
+			Some((n, m)) => println!("n = {}, m = {}", n, m),
+			None => println!("No solution found"),
+		}
+	}
+}
+
+fn solve_claw_machine(claw_machine: &ClawMachine) -> Option<(i32, i32)> {
+	/* n * claw_machine.button_x_1 + m * claw_machine.button_x_2 = claw_machine.prize_x
+	 * n * claw_machine.button_y_1 + m * claw_machine.button_y_2 = claw_machine.prize_y
+	 * <=>
+	 * m = (claw_machine.prize_x - n * claw_machine.button_x_1) / claw_machine.button_x_2
+	 * n * claw_machine.button_y_1 + claw_machine.button_y_2 * (claw_machine.prize_x - n * claw_machine.button_x_1) / claw_machine.button_x_2 = claw_machine.prize_y
+	 * <=>
+	 * n * claw_machine.button_y_1 + (claw_machine.prize_x * claw_machine.button_y_2 - n * claw_machine.button_x_1 * claw_machine.button_y_2) / claw_machine.button_x_2 = claw_machine.prize_y
+	 * <=>
+	 * n * claw_machine.button_y_1 + (claw_machine.prize_x * claw_machine.button_y_2 - n * claw_machine.button_x_1 * claw_machine.button_y_2) / claw_machine.button_x_2 = claw_machine.prize_y
+	 * <=>
+	 * claw_machine.button_x_2 * n * claw_machine.button_y_1 + claw_machine.prize_x * claw_machine.button_y_2 - n * claw_machine.button_x_1 * claw_machine.button_y_2 = claw_machine.prize_y * claw_machine.button_x_2
+	 * claw_machine.button_x_2 * n * claw_machine.button_y_1 - n * claw_machine.button_x_1 * claw_machine.button_y_2 = claw_machine.prize_y * claw_machine.button_x_2 - claw_machine.prize_x * claw_machine.button_y_2
+	 * n (claw_machine.button_x_2 * claw_machine.button_y_1 - claw_machine.button_x_1 * claw_machine.button_y_2) = claw_machine.prize_y * claw_machine.button_x_2 - claw_machine.prize_x * claw_machine.button_y_2
+	 * <=> */
+	let n = (claw_machine.prize_y * claw_machine.button_x_2 - claw_machine.prize_x * claw_machine.button_y_2) / (claw_machine.button_x_2 * claw_machine.button_y_1 - claw_machine.button_x_1 * claw_machine.button_y_2);
+	let m = (claw_machine.prize_x - n * claw_machine.button_x_1) / claw_machine.button_x_2;
+
+	// check result
+	if !(
+		n * claw_machine.button_x_1 + m * claw_machine.button_x_2 == claw_machine.prize_x ||
+		n * claw_machine.button_y_1 + m * claw_machine.button_y_2 == claw_machine.prize_y ) {
+		None
+	} else {
+		Some((n, m))
+	}
 }
 
 #[derive(Debug)]
