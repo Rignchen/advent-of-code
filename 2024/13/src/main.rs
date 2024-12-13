@@ -11,37 +11,12 @@ fn main() {
 	let input = get_input();
 	println!("{}",
 	         input.iter()
-	         .map(|x| solve_claw_machine(x))
+	         .map(|x| x.solve())
 	         .filter(|x| x.is_some()).map(|x| x.unwrap())
 	         .map(|(n, m)| n*3 + m)
 	         .sum::<i32>());
 }
 
-fn solve_claw_machine(claw_machine: &ClawMachine) -> Option<(i32, i32)> {
-	/* n * claw_machine.button_x_1 + m * claw_machine.button_x_2 = claw_machine.prize_x
-	 * n * claw_machine.button_y_1 + m * claw_machine.button_y_2 = claw_machine.prize_y
-	 * <=>
-	 * m = (claw_machine.prize_x - n * claw_machine.button_x_1) / claw_machine.button_x_2
-	 * n * claw_machine.button_y_1 + claw_machine.button_y_2 * (claw_machine.prize_x - n * claw_machine.button_x_1) / claw_machine.button_x_2 = claw_machine.prize_y
-	 * <=>
-	 * n * claw_machine.button_y_1 + (claw_machine.prize_x * claw_machine.button_y_2 - n * claw_machine.button_x_1 * claw_machine.button_y_2) / claw_machine.button_x_2 = claw_machine.prize_y
-	 * <=>
-	 * n * claw_machine.button_y_1 + (claw_machine.prize_x * claw_machine.button_y_2 - n * claw_machine.button_x_1 * claw_machine.button_y_2) / claw_machine.button_x_2 = claw_machine.prize_y
-	 * <=>
-	 * claw_machine.button_x_2 * n * claw_machine.button_y_1 + claw_machine.prize_x * claw_machine.button_y_2 - n * claw_machine.button_x_1 * claw_machine.button_y_2 = claw_machine.prize_y * claw_machine.button_x_2
-	 * claw_machine.button_x_2 * n * claw_machine.button_y_1 - n * claw_machine.button_x_1 * claw_machine.button_y_2 = claw_machine.prize_y * claw_machine.button_x_2 - claw_machine.prize_x * claw_machine.button_y_2
-	 * n (claw_machine.button_x_2 * claw_machine.button_y_1 - claw_machine.button_x_1 * claw_machine.button_y_2) = claw_machine.prize_y * claw_machine.button_x_2 - claw_machine.prize_x * claw_machine.button_y_2
-	 * <=> */
-	let n = (claw_machine.prize_y * claw_machine.button_x_2 - claw_machine.prize_x * claw_machine.button_y_2) / (claw_machine.button_x_2 * claw_machine.button_y_1 - claw_machine.button_x_1 * claw_machine.button_y_2);
-	let m = (claw_machine.prize_x - n * claw_machine.button_x_1) / claw_machine.button_x_2;
-
-	// check result
-	if !(
-		n * claw_machine.button_x_1 + m * claw_machine.button_x_2 == claw_machine.prize_x ||
-		n * claw_machine.button_y_1 + m * claw_machine.button_y_2 == claw_machine.prize_y ) {
-		None
-	} else {
-		Some((n, m))
 	}
 }
 
@@ -70,6 +45,34 @@ impl ClawMachine {
 			button_y_2: caps.get(4).unwrap().as_str().parse().unwrap(),
 			prize_x: caps.get(5).unwrap().as_str().parse().unwrap(),
 			prize_y: caps.get(6).unwrap().as_str().parse().unwrap(),
+		}
+	}
+
+	fn solve(&self) -> Option<(i32, i32)> {
+		/* a * self.button_x_1 + b * self.button_x_2 = self.prize_x
+		 * a * self.button_y_1 + b * self.button_y_2 = self.prize_y
+		 * <=>
+		 * b = (self.prize_x - a * self.button_x_1) / self.button_x_2
+		 * a * self.button_y_1 + self.button_y_2 * (self.prize_x - a * self.button_x_1) / self.button_x_2 = self.prize_y
+		 * <=>
+		 * a * self.button_y_1 + (self.prize_x * self.button_y_2 - a * self.button_x_1 * self.button_y_2) / self.button_x_2 = self.prize_y
+		 * <=>
+		 * a * self.button_y_1 + (self.prize_x * self.button_y_2 - a * self.button_x_1 * self.button_y_2) / self.button_x_2 = self.prize_y
+		 * <=>
+		 * self.button_x_2 * a * self.button_y_1 + self.prize_x * self.button_y_2 - a * self.button_x_1 * self.button_y_2 = self.prize_y * self.button_x_2
+		 * self.button_x_2 * a * self.button_y_1 - a * self.button_x_1 * self.button_y_2 = self.prize_y * self.button_x_2 - self.prize_x * self.button_y_2
+		 * a (self.button_x_2 * self.button_y_1 - self.button_x_1 * self.button_y_2) = self.prize_y * self.button_x_2 - self.prize_x * self.button_y_2
+		 * <=> */
+		let a = (self.prize_y * self.button_x_2 - self.prize_x * self.button_y_2) / (self.button_x_2 * self.button_y_1 - self.button_x_1 * self.button_y_2);
+		let b = (self.prize_x - a * self.button_x_1) / self.button_x_2;
+
+		// check result
+		if !(
+			a * self.button_x_1 + b * self.button_x_2 == self.prize_x ||
+			a * self.button_y_1 + b * self.button_y_2 == self.prize_y ) {
+			None
+		} else {
+			Some((a, b))
 		}
 	}
 }
