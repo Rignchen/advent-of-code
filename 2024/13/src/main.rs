@@ -17,9 +17,6 @@ fn main() {
 	         .sum::<i32>());
 }
 
-	}
-}
-
 #[derive(Debug)]
 struct ClawMachine {
 	button_x_1: i32,
