@@ -1,45 +1,29 @@
 use regex::Regex;
 
-fn get_input() -> (Vec<Robot>, (i32, i32)) {
+fn get_input() -> Map {
 	let map_size = (11, 7);
 	let file = "data/example.txt";
-
+ 
 	let contents = std::fs::read_to_string(file).unwrap();
-	(contents.lines().map(|line| Robot::new(line)).collect(), map_size)
+	Map::new(contents.lines().map(|line| Robot::new(line)).collect(), map_size)
 }
 
 fn main() {
-	let (mut robots, map_size) = get_input();
+	let mut map = get_input();
 	// after 100 seconds
-	robots.iter_mut().for_each(|robot| robot.move_robot(100, map_size));
-	print_map(&robots, map_size);
+	map.wait(100);
+	println!("{}", map.display());
+	let quadrants = map.split_quadriants();
 
-	let top_left = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopLeft).count();
-	let top_right = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopRight).count();
-	let bottom_left = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomLeft).count();
-	let bottom_right = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomRight).count();
-	println!("top left:     {}", top_left);
-	println!("top right:    {}", top_right);
-	println!("bottom left:  {}", bottom_left);
-	println!("bottom right: {}", bottom_right);
-	println!("safety factor: {}", top_left * top_right * bottom_left * bottom_right);
+	println!("Top left:     {}\n{}", quadrants.0.len(), quadrants.0.display());
+	println!("Top right:    {}\n{}", quadrants.1.len(), quadrants.1.display());
+	println!("Bottom left:  {}\n{}", quadrants.2.len(), quadrants.2.display());
+	println!("Bottom right: {}\n{}", quadrants.3.len(), quadrants.3.display());
+
+	println!("Safety factor: {}", quadrants.0.len() * quadrants.1.len() * quadrants.2.len() * quadrants.3.len());
 }
 
-fn print_map(robots: &Vec<Robot>, map_size: (i32, i32)) {
-	let mut map = vec![vec![0; map_size.0 as usize]; map_size.1 as usize];
-	robots.iter()
-		.for_each(|robot| {
-		map[robot.position.1 as usize][robot.position.0 as usize] += 1;
-	});
-	map.iter().for_each(|row| {
-		row.iter().for_each(|&cell| {
-			print!("{}", if cell == 0 { '.' } else { cell.to_string().chars().next().unwrap() });
-		});
-		println!();
-	});
-}
-
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 struct Robot {
 	position: (i32, i32),
 	velocity: (i32, i32),
@@ -63,10 +47,10 @@ impl Robot {
 	fn move_robot(&mut self, seconds: i32, map_size: (i32, i32)) {
 		self.position.0 += self.velocity.0 * seconds;
 		self.position.1 += self.velocity.1 * seconds;
-
+ 
 		self.position.0 %= map_size.0;
 		self.position.1 %= map_size.1;
-
+ 
 		if self.position.0 < 0 {
 			self.position.0 += map_size.0;
 		}
@@ -87,6 +71,80 @@ impl Robot {
 				(false, false) => Quadrant::BottomRight,
 			}
 		}
+	}
+}
+
+struct Map {
+	robots: Vec<Robot>,
+	map_size: (i32, i32),
+}
+impl Map {
+	fn new(robots: Vec<Robot>, map_size: (i32, i32)) -> Map {
+		let mut robots = robots.clone();
+		// adjust robot positions to be in the map
+		robots.iter_mut().for_each(|robot| {
+			robot.position.0 %= map_size.0;
+			robot.position.1 %= map_size.1;
+
+			if robot.position.0 < 0 {
+				robot.position.0 += map_size.0;
+			}
+			if robot.position.1 < 0 {
+				robot.position.1 += map_size.1;
+			}
+		});
+		Map { robots, map_size }
+	}
+
+	fn wait(&mut self, seconds: i32) {
+		self.robots.iter_mut().for_each(|robot| robot.move_robot(seconds, self.map_size));
+	}
+
+	fn display(&self) -> String {
+		let mut map = vec![vec![0 as u8; self.map_size.0 as usize]; self.map_size.1 as usize];
+		let mut output = Vec::new();
+		self.robots.iter()
+			.for_each(|robot| {
+				map[robot.position.1 as usize][robot.position.0 as usize] += 1;
+			});
+		map.iter().for_each(|row| {
+			output.push(String::new());
+			row.iter().for_each(|cell| {
+				output.last_mut().unwrap().push(if *cell > 9 { '#' } else if *cell > 0 { (*cell).to_string().chars().next().unwrap() } else { '.' });
+			});
+		});
+		output.join("\n")
+	}
+
+	fn len(&self) -> usize {
+		self.robots.len()
+	}
+
+	fn split_quadriants(&self) -> (Map, Map, Map, Map, Map) {
+		// split the map into 5 parts corresponding to the 5 quadrants
+		let mut top_left = vec![];
+		let mut top_right = vec![];
+		let mut bottom_left = vec![];
+		let mut bottom_right = vec![];
+		let mut middle = vec![];
+
+		self.robots.iter().for_each(|robot| {
+			match robot.get_quadrant(self.map_size) {
+				Quadrant::TopLeft => top_left.push(*robot),
+				Quadrant::TopRight => top_right.push(*robot),
+				Quadrant::BottomLeft => bottom_left.push(*robot),
+				Quadrant::BottomRight => bottom_right.push(*robot),
+				Quadrant::Middle => middle.push(*robot),
+			}
+		});
+
+		(
+			Map::new(top_left, (self.map_size.0 / 2, self.map_size.1 / 2)),
+			Map::new(top_right, (self.map_size.0 / 2, self.map_size.1 / 2)),
+			Map::new(bottom_left, (self.map_size.0 / 2, self.map_size.1 / 2)),
+			Map::new(bottom_right, (self.map_size.0 / 2, self.map_size.1 / 2)),
+			Map::new(middle, self.map_size),
+		)
 	}
 }
 
