@@ -15,14 +15,14 @@ fn main() {
 	         .filter(|x| x.is_some()).map(|x| x.unwrap())
 	         .filter(|(a, b)| *a >= 0 && *b >= 0)
 	         .map(|(n, m)| n*3 + m)
-	         .sum::<i32>());
+	         .sum::<i64>());
 }
 
 #[derive(Debug)]
 struct ClawMachine {
-	button_a: (i32, i32),
-	button_b: (i32, i32),
-	prize: (i32, i32),
+	button_a: (i64, i64),
+	button_b: (i64, i64),
+	prize: (i64, i64),
 }
 impl ClawMachine {
 	fn new(input: &str) -> ClawMachine {
@@ -43,13 +43,13 @@ impl ClawMachine {
 				caps.get(4).unwrap().as_str().parse().unwrap()
 			),
 			prize: (
-				caps.get(5).unwrap().as_str().parse().unwrap(),
-				caps.get(6).unwrap().as_str().parse().unwrap()
+				caps.get(5).unwrap().as_str().parse::<i64>().unwrap() + 10000000000000,
+				caps.get(6).unwrap().as_str().parse::<i64>().unwrap() + 10000000000000
 			),
 		}
 	}
 
-	fn solve(&self) -> Option<(i32, i32)> {
+	fn solve(&self) -> Option<(i64, i64)> {
 		let determinant = self.button_a.0 * self.button_b.1 - self.button_a.1 * self.button_b.0;
 		if determinant == 0 {
 			return None
