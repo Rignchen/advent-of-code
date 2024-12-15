@@ -13,6 +13,10 @@ fn main() {
 	// after 100 seconds
 	robots.iter_mut().for_each(|robot| robot.move_robot(100, map_size));
 	print_map(&robots, map_size);
+	println!("top left:     {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopLeft).count());
+	println!("top right:    {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopRight).count());
+	println!("bottom left:  {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomLeft).count());
+	println!("bottom right: {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomRight).count());
 }
 
 fn print_map(robots: &Vec<Robot>, map_size: (i32, i32)) {
@@ -64,4 +68,27 @@ impl Robot {
 			self.position.1 += map_size.1;
 		}
 	}
+
+	fn get_quadrant(&self, map_size: (i32, i32)) -> Quadrant {
+		// is the robot in the middle of the x or y axis?
+		if self.position.0 == map_size.0 / 2 || self.position.1 == map_size.1 / 2 {
+			Quadrant::Middle
+		} else {
+			match (self.position.0 < map_size.0 / 2, self.position.1 < map_size.1 / 2) {
+				(true, true) => Quadrant::TopLeft,
+				(true, false) => Quadrant::BottomLeft,
+				(false, true) => Quadrant::TopRight,
+				(false, false) => Quadrant::BottomRight,
+			}
+		}
+	}
+}
+
+#[derive(Debug, PartialEq)]
+enum Quadrant {
+	TopLeft,
+	TopRight,
+	BottomLeft,
+	BottomRight,
+	Middle,
 }
