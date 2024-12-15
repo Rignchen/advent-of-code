@@ -6,5 +6,5 @@ fn get_input() -> String {
 
 fn main() {
 	let input = get_input();
-	println!("{}", input);
+	println!("{:?}", input);
 }
