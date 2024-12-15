@@ -13,7 +13,7 @@ fn main() {
 	         input.iter()
 	         .map(|x| x.solve())
 	         .filter(|x| x.is_some()).map(|x| x.unwrap())
-             .filter(|(a, b)| *a >= 0 && *b >= 0)
+	         .filter(|(a, b)| *a >= 0 && *b >= 0)
 	         .map(|(n, m)| n*3 + m)
 	         .sum::<i32>());
 }
@@ -33,19 +33,19 @@ impl ClawMachine {
 		 */
 		let re = Regex::new(r"Button A: X\+?(-?\d+), Y\+?(-?\d+)\nButton B: X\+?(-?\d+), Y\+?(-?\d+)\nPrize: X=(-?\d+), Y=(-?\d+)").unwrap();
 		let caps = re.captures(input).unwrap();
-        ClawMachine {
-            button_a: (
-                caps.get(1).unwrap().as_str().parse().unwrap(),
-                caps.get(2).unwrap().as_str().parse().unwrap()
-            ),
-            button_b: (
-                caps.get(3).unwrap().as_str().parse().unwrap(),
-                caps.get(4).unwrap().as_str().parse().unwrap()
-            ),
-            prize: (
-                caps.get(5).unwrap().as_str().parse().unwrap(),
-                caps.get(6).unwrap().as_str().parse().unwrap()
-            ),
+		ClawMachine {
+			button_a: (
+				caps.get(1).unwrap().as_str().parse().unwrap(),
+				caps.get(2).unwrap().as_str().parse().unwrap()
+			),
+			button_b: (
+				caps.get(3).unwrap().as_str().parse().unwrap(),
+				caps.get(4).unwrap().as_str().parse().unwrap()
+			),
+			prize: (
+				caps.get(5).unwrap().as_str().parse().unwrap(),
+				caps.get(6).unwrap().as_str().parse().unwrap()
+			),
 		}
 	}
 
