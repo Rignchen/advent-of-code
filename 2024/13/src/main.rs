@@ -1,7 +1,7 @@
 use regex::Regex;
 
 fn get_input() -> Vec<ClawMachine> {
-	let file = "data/example.txt";
+	let file = "data/input.txt";
 	let contents = std::fs::read_to_string(file).unwrap();
 	let contents = contents.split("\n\n").collect::<Vec<&str>>();
 	contents.iter().map(|x| ClawMachine::new(x)).collect()
@@ -13,6 +13,7 @@ fn main() {
 	         input.iter()
 	         .map(|x| x.solve())
 	         .filter(|x| x.is_some()).map(|x| x.unwrap())
+             .filter(|(a, b)| *a >= 0 && *b >= 0)
 	         .map(|(n, m)| n*3 + m)
 	         .sum::<i32>());
 }
@@ -49,30 +50,22 @@ impl ClawMachine {
 	}
 
 	fn solve(&self) -> Option<(i32, i32)> {
-		/* a * self.button_a.0 + b * self.button_b.0 = self.prize.0
-		 * a * self.button_a.1 + b * self.button_b.1 = self.prize.1
-		 * <=>
-		 * b = (self.prize.0 - a * self.button_a.0) / self.button_b.0
-		 * a * self.button_a.1 + self.button_b.1 * (self.prize.0 - a * self.button_a.0) / self.button_b.0 = self.prize.1
-		 * <=>
-		 * a * self.button_a.1 + (self.prize.0 * self.button_b.1 - a * self.button_a.0 * self.button_b.1) / self.button_b.0 = self.prize.1
-		 * <=>
-		 * a * self.button_a.1 + (self.prize.0 * self.button_b.1 - a * self.button_a.0 * self.button_b.1) / self.button_b.0 = self.prize.1
-		 * <=>
-		 * self.button_b.0 * a * self.button_a.1 + self.prize.0 * self.button_b.1 - a * self.button_a.0 * self.button_b.1 = self.prize.1 * self.button_b.0
-		 * self.button_b.0 * a * self.button_a.1 - a * self.button_a.0 * self.button_b.1 = self.prize.1 * self.button_b.0 - self.prize.0 * self.button_b.1
-		 * a (self.button_b.0 * self.button_a.1 - self.button_a.0 * self.button_b.1) = self.prize.1 * self.button_b.0 - self.prize.0 * self.button_b.1
-		 * <=> */
-		let a = (self.prize.1 * self.button_b.0 - self.prize.0 * self.button_b.1) / (self.button_b.0 * self.button_a.1 - self.button_a.0 * self.button_b.1);
-		let b = (self.prize.0 - a * self.button_a.0) / self.button_b.0;
+		let determinant = self.button_a.0 * self.button_b.1 - self.button_a.1 * self.button_b.0;
+		if determinant == 0 {
+			return None
+		}
+
+		// Calculate A and B using Cramer's rule
+		let a = (self.button_b.1 * self.prize.0 - self.button_b.0 * self.prize.1) / determinant;
+		let b = (self.button_a.0 * self.prize.1 - self.button_a.1 * self.prize.0) / determinant;
 
 		// check result
-		if !(
-			a * self.button_a.0 + b * self.button_b.0 == self.prize.0 ||
-			a * self.button_a.1 + b * self.button_b.1 == self.prize.1 ) {
-			None
-		} else {
+		if
+			a * self.button_a.0 + b * self.button_b.0 == self.prize.0 &&
+			a * self.button_a.1 + b * self.button_b.1 == self.prize.1 {
 			Some((a, b))
+		} else {
+			None
 		}
 	}
 }
