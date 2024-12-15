@@ -13,10 +13,16 @@ fn main() {
 	// after 100 seconds
 	robots.iter_mut().for_each(|robot| robot.move_robot(100, map_size));
 	print_map(&robots, map_size);
-	println!("top left:     {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopLeft).count());
-	println!("top right:    {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopRight).count());
-	println!("bottom left:  {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomLeft).count());
-	println!("bottom right: {}", robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomRight).count());
+
+	let top_left = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopLeft).count();
+	let top_right = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::TopRight).count();
+	let bottom_left = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomLeft).count();
+	let bottom_right = robots.iter().filter(|robot| robot.get_quadrant(map_size) == Quadrant::BottomRight).count();
+	println!("top left:     {}", top_left);
+	println!("top right:    {}", top_right);
+	println!("bottom left:  {}", bottom_left);
+	println!("bottom right: {}", bottom_right);
+	println!("safety factor: {}", top_left * top_right * bottom_left * bottom_right);
 }
 
 fn print_map(robots: &Vec<Robot>, map_size: (i32, i32)) {
