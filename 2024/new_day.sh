@@ -43,6 +43,7 @@ if ! [ "$1" ]; then
 		sleep $WAIT
 	fi
 else
+	DAY=$(format_day $1)
 	validate_day $DAY
 	if [[ $? -gt 0 ]]; then
 		exit 1
