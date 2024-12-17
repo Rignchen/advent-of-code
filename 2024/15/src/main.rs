@@ -40,7 +40,8 @@ fn get_input() -> (Map, Vec<Direction>) {
 fn main() {
 	let (mut map, directions) = get_input();
 	println!("{}", map.display());
-	println!("{:?}", directions);
+	directions.iter().for_each(|d| map.move_robot(d.clone()));
+	println!("{}", map.display());
 }
 
 #[derive(Debug)]
@@ -50,6 +51,13 @@ struct Map {
 	robot: Position,
 }
 impl Map {
+	fn move_robot(&mut self, direction: Direction) {
+		let next_position = self.robot.next(direction.clone());
+		if self.push(next_position, direction) {
+			self.robot = next_position;
+		}
+	}
+
 	fn push(&mut self, position: Position, direction: Direction) -> bool {
 		if self.walls.contains(&position) {
 			false
