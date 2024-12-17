@@ -1,4 +1,4 @@
-fn get_input() -> Map {
+fn get_input() -> (Map, Vec<Direction>) {
 	let file = "data/example.txt";
 	let content = std::fs::read_to_string(file).unwrap();
 	let mut content = content.split("\n\n");
@@ -24,16 +24,23 @@ fn get_input() -> Map {
 		}
 	}
  
-	Map {
+	(Map {
 		walls,
 		boxes,
 		robot: robot.expect("Robot not found"),
-	}
+	}, movements.chars().filter(|c| *c != '\n').map(|c| match c {
+		'>' => Direction::Right,
+		'<' => Direction::Left,
+		'^' => Direction::Up,
+		'v' => Direction::Down,
+		_ => panic!("Invalid direction: {}", c),
+	}).collect())
 }
 
 fn main() {
-	let input = get_input();
-	println!("{:?}", input);
+	let (mut map, directions) = get_input();
+	println!("{:?}", map);
+	println!("{:?}", directions);
 }
 
 #[derive(Debug)]
@@ -47,4 +54,12 @@ struct Map {
 struct Position {
 	x: i32,
 	y: i32,
+}
+
+#[derive(Debug, Clone)]
+enum Direction {
+	Up,
+	Down,
+	Left,
+	Right,
 }
