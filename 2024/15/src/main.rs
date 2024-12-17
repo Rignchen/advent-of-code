@@ -50,6 +50,22 @@ struct Map {
 	robot: Position,
 }
 impl Map {
+	fn push(&mut self, position: Position, direction: Direction) -> bool {
+		if self.walls.contains(&position) {
+			false
+		} else if !self.boxes.contains(&position) {
+			true
+		} else {
+			let next_position = position.next(direction.clone());
+			if self.push(next_position.clone(), direction) {
+				*self.boxes.iter_mut().find(|p| **p == position).unwrap() = next_position;
+				true
+			} else {
+				false
+			}
+		}
+	}
+
 	fn display(&self) -> String {
 		let width = self.walls.iter().map(|p| p.x).max().unwrap() as usize + 1;
 		let height = self.walls.iter().map(|p| p.y).max().unwrap() as usize + 1;
@@ -76,6 +92,15 @@ struct Position {
 	x: i32,
 	y: i32,
 }
+impl Position {
+	fn next(&self, direction: Direction) -> Position {
+		let (dx, dy) = direction.next();
+		Position {
+			x: self.x + dx,
+			y: self.y + dy,
+		}
+	}
+}
 
 #[derive(Debug, Clone)]
 enum Direction {
@@ -83,4 +108,14 @@ enum Direction {
 	Down,
 	Left,
 	Right,
+}
+impl Direction {
+	fn next(&self) -> (i32, i32) {
+		match self {
+			Direction::Up => (0, -1),
+			Direction::Down => (0, 1),
+			Direction::Left => (-1, 0),
+			Direction::Right => (1, 0),
+		}
+	}
 }
