@@ -1,4 +1,4 @@
-fn get_input() -> (Vec<Position>, Vec<Position>, Position) {
+fn get_input() -> Map {
 	let file = "data/example.txt";
 	let content = std::fs::read_to_string(file).unwrap();
 	let mut content = content.split("\n\n");
@@ -24,12 +24,23 @@ fn get_input() -> (Vec<Position>, Vec<Position>, Position) {
 		}
 	}
  
-	(walls, boxes, robot)
+	Map {
+		walls,
+		boxes,
+		robot: robot.expect("Robot not found"),
+	}
 }
 
 fn main() {
 	let input = get_input();
 	println!("{:?}", input);
+}
+
+#[derive(Debug)]
+struct Map {
+	walls: Vec<Position>,
+	boxes: Vec<Position>,
+	robot: Position,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
