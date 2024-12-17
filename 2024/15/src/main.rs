@@ -1,5 +1,5 @@
 fn get_input() -> (Map, Vec<Direction>) {
-	let file = "data/example.txt";
+	let file = "data/input.txt";
 	let content = std::fs::read_to_string(file).unwrap();
 	let mut content = content.split("\n\n");
 	let contents = content.next().unwrap();
@@ -42,6 +42,7 @@ fn main() {
 	println!("{}", map.display());
 	directions.iter().for_each(|d| map.move_robot(d.clone()));
 	println!("{}", map.display());
+	println!("GPS: {}", map.boxes.iter().map(|p| p.gps()).sum::<i32>());
 }
 
 #[derive(Debug)]
@@ -107,6 +108,10 @@ impl Position {
 			x: self.x + dx,
 			y: self.y + dy,
 		}
+	}
+
+	fn gps(&self) -> i32 {
+		self.x + self.y * 100
 	}
 }
 
