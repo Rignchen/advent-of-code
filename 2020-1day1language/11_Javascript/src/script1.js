@@ -25,9 +25,39 @@ function adjacent(x, y, content) {
 	return adj;
 }
 
-let old;
-while (content !== old) {
-	old = content;
+/**
+ * fill chairs based on a rule set:
+ * - If empty (L) & no occupied seats near: becomes occupied (#)
+ * - If occupied (#) & 4+ occupied seats near: becomes empty (L)
+ * - Otherwise, the seat's state does not change.
+ * @param {string[]} old
+ * @returns {string[]}
+ */
+function peopleMove(old) {
+	let content = [];
+	old.forEach((line, i) => {
+		let newLine = '';
+		line.split('').forEach((c, j) => {
+			const adj = adjacent(i, j, old);
+			const filledNear = adj.filter(x => x == '#').length;
+
+			if (c == 'L' && filledNear == 0) {
+				newLine += '#';
+			} else if (c == '#' && filledNear >= 4) {
+				newLine += 'L';
+			} else {
+				newLine += c;
+			}
+		});
+		content.push(newLine);
+	});
+	return content;
 }
 
-console.log(content);
+let old = [];
+while (content.join('') !== old.join('')) {
+	old = content;
+	content = peopleMove(content);
+}
+
+console.log(content.join('\n'));
