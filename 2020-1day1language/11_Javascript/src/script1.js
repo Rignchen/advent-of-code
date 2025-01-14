@@ -61,3 +61,4 @@ while (content.join('') !== old.join('')) {
 }
 
 console.log(content.join('\n'));
+console.log(content.join('').split('').filter(x => x === '#').length);
